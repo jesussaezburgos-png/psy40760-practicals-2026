@@ -44,11 +44,11 @@ psy40760-practicals-2026/          <- the course folder (the "root")
 │   └── Cheatsheets/
 └── seminar-02-confidence-intervals-and-effect-sizes/
     ├── seminar-02-worksheet.qmd       <- this worksheet
-    ├── seminar-02-worksheet_files/    <- this week's data
-    │   ├── weight_trial.csv
-    │   ├── weight_followup_wide.csv
-    │   └── simulate_datasets.R
-    └── seminar-02/                    <- DataCamp course outlines (PDF)
+    └── seminar-02-worksheet_files/    <- this week's data
+        ├── weight_trial.csv
+        ├── weight_followup_wide.csv
+        └── simulate_datasets.R
+
 ```
 
 The renv files and `.root-practicals` sit at the top of the course folder; each seminar has its own folder below it, holding the worksheet, its `_files` folder (data) and any extra materials. Keep the folder and file names exactly as shown: the code in the worksheets relies on them.
