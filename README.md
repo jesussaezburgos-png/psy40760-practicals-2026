@@ -12,12 +12,15 @@ This repo does **not** contain the take-home exam — that's released separately
    ```
    git clone git@github.com:ozika/psy40760-practicals-2026.git
    ```
-4. **Open the project** by double-clicking `psy40760-practicals-2026.Rproj` — always open the `.Rproj` file first, not an individual `.Rmd`, so your working directory is set correctly.
-5. **Restore the package environment:**
+4. **Point R at the repository folder:** in RStudio, *Session → Set Working Directory → Choose Directory…*, and choose `psy40760-practicals-2026`. (No RStudio Project is needed.)
+5. **Load and restore the package environment**, in the console:
    ```r
-   renv::restore()
+   renv::load()      # switch this R session to the course's package library
+   renv::restore()   # install the exact package versions the course uses
    ```
-   This installs the exact package versions the course uses, into an isolated project library, without touching anything else on your machine.
+   This installs the packages into an isolated project library, without touching anything else on your machine.
+
+The empty file `.root-practicals` at the top of the repository marks its root: the worksheets find their data with `here::i_am(".root-practicals")`. Don't move or delete it.
 
 ## Getting each week's update
 
@@ -27,6 +30,6 @@ New weeks are added to this repo as the trimester progresses. Before each practi
 git pull
 ```
 
-from inside the project folder. If `renv.lock` has changed (i.e. new packages were added for that week), run `renv::restore()` again afterwards.
+from inside the repository folder. Then, in RStudio, point R at the folder again and run `renv::load()` followed by `renv::restore()`, which installs any packages added for that week.
 
 
