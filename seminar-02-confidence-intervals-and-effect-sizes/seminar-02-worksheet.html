@@ -279,11 +279,11 @@ window.Quarto = {
 │   └── Cheatsheets/
 └── seminar-02-confidence-intervals-and-effect-sizes/
     ├── seminar-02-worksheet.qmd       &lt;- this worksheet
-    ├── seminar-02-worksheet_files/    &lt;- this week's data
-    │   ├── weight_trial.csv
-    │   ├── weight_followup_wide.csv
-    │   └── simulate_datasets.R
-    └── seminar-02/                    &lt;- DataCamp course outlines (PDF)</code></pre>
+    └── seminar-02-worksheet_files/    &lt;- this week's data
+        ├── weight_trial.csv
+        ├── weight_followup_wide.csv
+        └── simulate_datasets.R
+</code></pre>
 <p>The renv files and <code>.root-practicals</code> sit at the top of the course folder; each seminar has its own folder below it, holding the worksheet, its <code>_files</code> folder (data) and any extra materials. Keep the folder and file names exactly as shown: the code in the worksheets relies on them.</p>
 <p><strong>Option A (easiest): clone the course repository.</strong> Once, in a terminal:</p>
 <pre><code>git clone git@github.com:ozika/psy40760-practicals-2026.git</code></pre>
@@ -439,7 +439,7 @@ window.Quarto = {
 <pre><code>Warning: package 'here' was built under R version 4.4.1</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>here() starts at /Users/zika/projects/2026-advanced-stats-mscbn-PSY40760</code></pre>
+<pre><code>here() starts at /Users/zika/projects/2026-advanced-stats-mscbn-PSY40760/2026-materials/psy40760-practicals-2026</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
@@ -484,18 +484,18 @@ Attaching package: 'dplyr'</code></pre>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">i_am</span>(<span class="st">".root-practicals"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>here() starts at /Users/zika/projects/2026-advanced-stats-mscbn-PSY40760/2026-materials/practicals</code></pre>
+<pre><code>here() starts at /Users/zika/projects/2026-advanced-stats-mscbn-PSY40760/2026-materials/psy40760-practicals-2026</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">here</span>()    <span class="co"># the practicals root on this computer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "/Users/zika/projects/2026-advanced-stats-mscbn-PSY40760/2026-materials/practicals"</code></pre>
+<pre><code>[1] "/Users/zika/projects/2026-advanced-stats-mscbn-PSY40760/2026-materials/psy40760-practicals-2026"</code></pre>
 </div>
 </div>
 <p><code>here()</code> joins folder and file names into a full path for you. List the folders in order, then the file name:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">here</span>(<span class="st">"seminar-02-confidence-intervals-and-effect-sizes"</span>, <span class="st">"seminar-02-worksheet_files"</span>, <span class="st">"weight_trial.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "/Users/zika/projects/2026-advanced-stats-mscbn-PSY40760/2026-materials/practicals/seminar-02-confidence-intervals-and-effect-sizes/seminar-02-worksheet_files/weight_trial.csv"</code></pre>
+<pre><code>[1] "/Users/zika/projects/2026-advanced-stats-mscbn-PSY40760/2026-materials/psy40760-practicals-2026/seminar-02-confidence-intervals-and-effect-sizes/seminar-02-worksheet_files/weight_trial.csv"</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">file.exists</span>(<span class="fu">here</span>(<span class="st">"seminar-02-confidence-intervals-and-effect-sizes"</span>, <span class="st">"seminar-02-worksheet_files"</span>, <span class="st">"weight_trial.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
