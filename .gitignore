@@ -9,8 +9,4 @@ renv/lock/
 renv/python/
 renv/sandbox/
 renv/staging/
-*.html
 .DS_Store
-# Quarto render output only; *_files/ folders also hold the worksheets' data
-*_files/libs/
-*_files/figure-html/

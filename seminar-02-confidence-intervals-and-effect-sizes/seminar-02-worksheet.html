@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-09-30">
+
+<title>Seminar 2 — Confidence Intervals &amp; Effect Sizes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="seminar-02-worksheet_files/libs/clipboard/clipboard.min.js"></script>
+<script src="seminar-02-worksheet_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="seminar-02-worksheet_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="seminar-02-worksheet_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="seminar-02-worksheet_files/libs/quarto-html/popper.min.js"></script>
+<script src="seminar-02-worksheet_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="seminar-02-worksheet_files/libs/quarto-html/anchor.min.js"></script>
+<link href="seminar-02-worksheet_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="seminar-02-worksheet_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="seminar-02-worksheet_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="seminar-02-worksheet_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="seminar-02-worksheet_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#worksheet-2" id="toc-worksheet-2" class="nav-link active" data-scroll-target="#worksheet-2">Worksheet 2</a>
+  <ul>
+  <li><a href="#welcome" id="toc-welcome" class="nav-link" data-scroll-target="#welcome">Welcome</a></li>
+  <li><a href="#session-at-a-glance" id="toc-session-at-a-glance" class="nav-link" data-scroll-target="#session-at-a-glance">Session at a glance</a></li>
+  <li><a href="#before-you-arrive" id="toc-before-you-arrive" class="nav-link" data-scroll-target="#before-you-arrive">Before you arrive</a>
+  <ul class="collapse">
+  <li><a href="#set-up-the-course-folder" id="toc-set-up-the-course-folder" class="nav-link" data-scroll-target="#set-up-the-course-folder">1. Set up the course folder</a></li>
+  <li><a href="#datacamp" id="toc-datacamp" class="nav-link" data-scroll-target="#datacamp">2. DataCamp</a></li>
+  <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">3. Reading</a></li>
+  </ul></li>
+  <li><a href="#todays-session" id="toc-todays-session" class="nav-link" data-scroll-target="#todays-session">Today’s session</a></li>
+  <li><a href="#assessment" id="toc-assessment" class="nav-link" data-scroll-target="#assessment">Assessment</a></li>
+  <li><a href="#part-1-joint-walkthrough" id="toc-part-1-joint-walkthrough" class="nav-link" data-scroll-target="#part-1-joint-walkthrough">Part 1: Joint walkthrough</a>
+  <ul class="collapse">
+  <li><a href="#section-a-files-packages-and-paths" id="toc-section-a-files-packages-and-paths" class="nav-link" data-scroll-target="#section-a-files-packages-and-paths">Section A: Files, packages and paths</a>
+  <ul class="collapse">
+  <li><a href="#where-is-r-looking-working-directories-and-paths" id="toc-where-is-r-looking-working-directories-and-paths" class="nav-link" data-scroll-target="#where-is-r-looking-working-directories-and-paths">1.1 Where is R looking? Working directories and paths</a></li>
+  <li><a href="#packages-installing-loading-and-managing" id="toc-packages-installing-loading-and-managing" class="nav-link" data-scroll-target="#packages-installing-loading-and-managing">1.2 Packages: installing, loading and managing</a></li>
+  <li><a href="#relative-paths-with-here" id="toc-relative-paths-with-here" class="nav-link" data-scroll-target="#relative-paths-with-here">1.3 Relative paths with <code>here</code></a></li>
+  </ul></li>
+  <li><a href="#section-b-the-t-distribution-and-probabilities" id="toc-section-b-the-t-distribution-and-probabilities" class="nav-link" data-scroll-target="#section-b-the-t-distribution-and-probabilities">Section B: The t-distribution and probabilities</a>
+  <ul class="collapse">
+  <li><a href="#from-the-normal-distribution-to-the-t-distribution" id="toc-from-the-normal-distribution-to-the-t-distribution" class="nav-link" data-scroll-target="#from-the-normal-distribution-to-the-t-distribution">1.4 From the normal distribution to the t-distribution</a></li>
+  <li><a href="#the-critical-t-value" id="toc-the-critical-t-value" class="nav-link" data-scroll-target="#the-critical-t-value">1.5 The critical t-value</a></li>
+  <li><a href="#probabilities-the-density-and-the-cumulative-distribution" id="toc-probabilities-the-density-and-the-cumulative-distribution" class="nav-link" data-scroll-target="#probabilities-the-density-and-the-cumulative-distribution">1.6 Probabilities: the density and the cumulative distribution</a></li>
+  <li><a href="#bigger-than-smaller-than-and-between" id="toc-bigger-than-smaller-than-and-between" class="nav-link" data-scroll-target="#bigger-than-smaller-than-and-between">1.7 Bigger than, smaller than, and between</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#part-2-datacamp" id="toc-part-2-datacamp" class="nav-link" data-scroll-target="#part-2-datacamp">Part 2: DataCamp</a></li>
+  <li><a href="#part-3-exercises-in-rstudio" id="toc-part-3-exercises-in-rstudio" class="nav-link" data-scroll-target="#part-3-exercises-in-rstudio">Part 3: Exercises in RStudio</a>
+  <ul class="collapse">
+  <li><a href="#importing-the-data-15" id="toc-importing-the-data-15" class="nav-link" data-scroll-target="#importing-the-data-15">Importing the data (1–5)</a></li>
+  <li><a href="#exercise-1-packages" id="toc-exercise-1-packages" class="nav-link" data-scroll-target="#exercise-1-packages">Exercise 1 — Packages</a></li>
+  <li><a href="#exercise-2-building-the-path" id="toc-exercise-2-building-the-path" class="nav-link" data-scroll-target="#exercise-2-building-the-path">Exercise 2 — Building the path</a></li>
+  <li><a href="#exercise-3-importing" id="toc-exercise-3-importing" class="nav-link" data-scroll-target="#exercise-3-importing">Exercise 3 — Importing</a></li>
+  <li><a href="#exercise-4-checking-what-was-imported" id="toc-exercise-4-checking-what-was-imported" class="nav-link" data-scroll-target="#exercise-4-checking-what-was-imported">Exercise 4 — Checking what was imported</a></li>
+  <li><a href="#exercise-5-missing-values" id="toc-exercise-5-missing-values" class="nav-link" data-scroll-target="#exercise-5-missing-values">Exercise 5 — Missing values</a></li>
+  <li><a href="#wrangling-612" id="toc-wrangling-612" class="nav-link" data-scroll-target="#wrangling-612">Wrangling (6–12)</a></li>
+  <li><a href="#exercise-6-mutate-the-outcome" id="toc-exercise-6-mutate-the-outcome" class="nav-link" data-scroll-target="#exercise-6-mutate-the-outcome">Exercise 6 — <code>mutate()</code>: the outcome</a></li>
+  <li><a href="#exercise-7-select-and-relocate" id="toc-exercise-7-select-and-relocate" class="nav-link" data-scroll-target="#exercise-7-select-and-relocate">Exercise 7 — <code>select()</code> and <code>relocate()</code></a></li>
+  <li><a href="#exercise-8-filter" id="toc-exercise-8-filter" class="nav-link" data-scroll-target="#exercise-8-filter">Exercise 8 — <code>filter()</code></a></li>
+  <li><a href="#exercise-9-arrange-and-slice_max" id="toc-exercise-9-arrange-and-slice_max" class="nav-link" data-scroll-target="#exercise-9-arrange-and-slice_max">Exercise 9 — <code>arrange()</code> and <code>slice_max()</code></a></li>
+  <li><a href="#exercise-10-group_by-and-summarise" id="toc-exercise-10-group_by-and-summarise" class="nav-link" data-scroll-target="#exercise-10-group_by-and-summarise">Exercise 10 — <code>group_by()</code> and <code>summarise()</code></a></li>
+  <li><a href="#exercise-11-counting-combinations" id="toc-exercise-11-counting-combinations" class="nav-link" data-scroll-target="#exercise-11-counting-combinations">Exercise 11 — Counting combinations</a></li>
+  <li><a href="#exercise-12-recoding-with-ifelse" id="toc-exercise-12-recoding-with-ifelse" class="nav-link" data-scroll-target="#exercise-12-recoding-with-ifelse">Exercise 12 — Recoding with <code>ifelse()</code></a></li>
+  <li><a href="#probabilities-1318" id="toc-probabilities-1318" class="nav-link" data-scroll-target="#probabilities-1318">Probabilities (13–18)</a></li>
+  <li><a href="#exercise-13-a-normal-model-for-the-control-group" id="toc-exercise-13-a-normal-model-for-the-control-group" class="nav-link" data-scroll-target="#exercise-13-a-normal-model-for-the-control-group">Exercise 13 — A normal model for the control group</a></li>
+  <li><a href="#exercise-14-between-two-values" id="toc-exercise-14-between-two-values" class="nav-link" data-scroll-target="#exercise-14-between-two-values">Exercise 14 — Between two values</a></li>
+  <li><a href="#exercise-15-smaller-than-for-the-programme-group" id="toc-exercise-15-smaller-than-for-the-programme-group" class="nav-link" data-scroll-target="#exercise-15-smaller-than-for-the-programme-group">Exercise 15 — Smaller than, for the programme group</a></li>
+  <li><a href="#exercise-16-critical-values" id="toc-exercise-16-critical-values" class="nav-link" data-scroll-target="#exercise-16-critical-values">Exercise 16 — Critical values</a></li>
+  <li><a href="#exercise-17-a-t-statistic-by-hand" id="toc-exercise-17-a-t-statistic-by-hand" class="nav-link" data-scroll-target="#exercise-17-a-t-statistic-by-hand">Exercise 17 — A t statistic by hand</a></li>
+  <li><a href="#exercise-18-where-does-a-value-lie" id="toc-exercise-18-where-does-a-value-lie" class="nav-link" data-scroll-target="#exercise-18-where-does-a-value-lie">Exercise 18 — Where does a value lie?</a></li>
+  <li><a href="#confidence-intervals-1924" id="toc-confidence-intervals-1924" class="nav-link" data-scroll-target="#confidence-intervals-1924">Confidence intervals (19–24)</a></li>
+  <li><a href="#exercise-19-a-ci-for-one-mean-by-hand" id="toc-exercise-19-a-ci-for-one-mean-by-hand" class="nav-link" data-scroll-target="#exercise-19-a-ci-for-one-mean-by-hand">Exercise 19 — A CI for one mean, by hand</a></li>
+  <li><a href="#exercise-20-the-same-ci-from-t.test" id="toc-exercise-20-the-same-ci-from-t.test" class="nav-link" data-scroll-target="#exercise-20-the-same-ci-from-t.test">Exercise 20 — The same CI from <code>t.test()</code></a></li>
+  <li><a href="#exercise-21-changing-the-confidence-level" id="toc-exercise-21-changing-the-confidence-level" class="nav-link" data-scroll-target="#exercise-21-changing-the-confidence-level">Exercise 21 — Changing the confidence level</a></li>
+  <li><a href="#exercise-22-a-ci-for-the-difference-between-groups-by-hand" id="toc-exercise-22-a-ci-for-the-difference-between-groups-by-hand" class="nav-link" data-scroll-target="#exercise-22-a-ci-for-the-difference-between-groups-by-hand">Exercise 22 — A CI for the difference between groups, by hand</a></li>
+  <li><a href="#exercise-23-the-same-ci-from-t.test" id="toc-exercise-23-the-same-ci-from-t.test" class="nav-link" data-scroll-target="#exercise-23-the-same-ci-from-t.test">Exercise 23 — The same CI from <code>t.test()</code></a></li>
+  <li><a href="#exercise-24-reading-the-interval" id="toc-exercise-24-reading-the-interval" class="nav-link" data-scroll-target="#exercise-24-reading-the-interval">Exercise 24 — Reading the interval</a></li>
+  <li><a href="#effect-sizes-2530" id="toc-effect-sizes-2530" class="nav-link" data-scroll-target="#effect-sizes-2530">Effect sizes (25–30)</a></li>
+  <li><a href="#exercise-25-an-unstandardised-effect-size" id="toc-exercise-25-an-unstandardised-effect-size" class="nav-link" data-scroll-target="#exercise-25-an-unstandardised-effect-size">Exercise 25 — An unstandardised effect size</a></li>
+  <li><a href="#exercise-26-cohens-d-by-hand" id="toc-exercise-26-cohens-d-by-hand" class="nav-link" data-scroll-target="#exercise-26-cohens-d-by-hand">Exercise 26 — Cohen’s <em>d</em> by hand</a></li>
+  <li><a href="#exercise-27-wellbeing-with-missing-values" id="toc-exercise-27-wellbeing-with-missing-values" class="nav-link" data-scroll-target="#exercise-27-wellbeing-with-missing-values">Exercise 27 — Wellbeing, with missing values</a></li>
+  <li><a href="#exercise-28-standardised-or-unstandardised" id="toc-exercise-28-standardised-or-unstandardised" class="nav-link" data-scroll-target="#exercise-28-standardised-or-unstandardised">Exercise 28 — Standardised or unstandardised?</a></li>
+  <li><a href="#exercise-29-t-and-d-are-not-the-same-number" id="toc-exercise-29-t-and-d-are-not-the-same-number" class="nav-link" data-scroll-target="#exercise-29-t-and-d-are-not-the-same-number">Exercise 29 — <em>t</em> and <em>d</em> are not the same number</a></li>
+  <li><a href="#exercise-30-site-by-site" id="toc-exercise-30-site-by-site" class="nav-link" data-scroll-target="#exercise-30-site-by-site">Exercise 30 — Site by site</a></li>
+  </ul></li>
+  <li><a href="#challenge-exercises-optional" id="toc-challenge-exercises-optional" class="nav-link" data-scroll-target="#challenge-exercises-optional">Challenge exercises (optional)</a>
+  <ul class="collapse">
+  <li><a href="#challenge-1-from-wide-to-long" id="toc-challenge-1-from-wide-to-long" class="nav-link" data-scroll-target="#challenge-1-from-wide-to-long">Challenge 1 — From wide to long</a></li>
+  <li><a href="#challenge-2-summaries-and-a-plot" id="toc-challenge-2-summaries-and-a-plot" class="nav-link" data-scroll-target="#challenge-2-summaries-and-a-plot">Challenge 2 — Summaries and a plot</a></li>
+  <li><a href="#challenge-3-change-from-baseline" id="toc-challenge-3-change-from-baseline" class="nav-link" data-scroll-target="#challenge-3-change-from-baseline">Challenge 3 — Change from baseline</a></li>
+  <li><a href="#challenge-4-within-subject-effect-sizes" id="toc-challenge-4-within-subject-effect-sizes" class="nav-link" data-scroll-target="#challenge-4-within-subject-effect-sizes">Challenge 4 — Within-subject effect sizes</a></li>
+  <li><a href="#challenge-5-writing-functions-and-testing-the-95" id="toc-challenge-5-writing-functions-and-testing-the-95" class="nav-link" data-scroll-target="#challenge-5-writing-functions-and-testing-the-95">Challenge 5 — Writing functions and testing the 95%</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Seminar 2 — Confidence Intervals &amp; Effect Sizes</h1>
+<p class="subtitle lead">PSY40760 Advanced Data Analysis and Statistics in R</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 30, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="worksheet-2" class="level1">
+<h1>Worksheet 2</h1>
+<section id="welcome" class="level2">
+<h2 class="anchored" data-anchor-id="welcome">Welcome</h2>
+<p>This is the worksheet for our second session. It lists the reading and the to-do items for this week, then guides you through the practical.</p>
+</section>
+<section id="session-at-a-glance" class="level2">
+<h2 class="anchored" data-anchor-id="session-at-a-glance">Session at a glance</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Workshop Date</strong></td>
+<td>Wednesday 30 September 2026</td>
+</tr>
+<tr class="even">
+<td><strong>Due Date</strong></td>
+<td>Sunday 11 October 2026, 23:59</td>
+</tr>
+<tr class="odd">
+<td><strong>Time</strong></td>
+<td>14:00 – 16:50 (170 min)</td>
+</tr>
+<tr class="even">
+<td><strong>Room</strong></td>
+<td>L249-SUTH</td>
+</tr>
+<tr class="odd">
+<td><strong>Staff</strong></td>
+<td>Dr Ondrej Zika, Cameron McCabe</td>
+</tr>
+<tr class="even">
+<td><strong>Theory</strong></td>
+<td>Confidence intervals &amp; effect sizes</td>
+</tr>
+<tr class="odd">
+<td><strong>Practical</strong></td>
+<td>Paths, packages, the t-distribution; importing and wrangling data; CIs and effect sizes in R</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="before-you-arrive" class="level2">
+<h2 class="anchored" data-anchor-id="before-you-arrive">Before you arrive</h2>
+<section id="set-up-the-course-folder" class="level3">
+<h3 class="anchored" data-anchor-id="set-up-the-course-folder">1. Set up the course folder</h3>
+<p>All practicals of the module live in <strong>one course folder</strong>, with the same structure on every computer. For the first two seminars it looks like this:</p>
+<pre><code>psy40760-practicals-2026/          &lt;- the course folder (the "root")
+├── .root-practicals               &lt;- empty marker file: marks the root (section 1.3)
+├── .Rprofile                      &lt;- renv set-up files (section 1.2)
+├── renv.lock
+├── renv/
+├── seminar1-intro-to-stats-and-R/
+│   ├── seminar-01-worksheet.qmd
+│   └── Cheatsheets/
+└── seminar-02-confidence-intervals-and-effect-sizes/
+    ├── seminar-02-worksheet.qmd       &lt;- this worksheet
+    ├── seminar-02-worksheet_files/    &lt;- this week's data
+    │   ├── weight_trial.csv
+    │   ├── weight_followup_wide.csv
+    │   └── simulate_datasets.R
+    └── seminar-02/                    &lt;- DataCamp course outlines (PDF)</code></pre>
+<p>The renv files and <code>.root-practicals</code> sit at the top of the course folder; each seminar has its own folder below it, holding the worksheet, its <code>_files</code> folder (data) and any extra materials. Keep the folder and file names exactly as shown: the code in the worksheets relies on them.</p>
+<p><strong>Option A (easiest): clone the course repository.</strong> Once, in a terminal:</p>
+<pre><code>git clone git@github.com:ozika/psy40760-practicals-2026.git</code></pre>
+<p>Before each practical, run <code>git pull</code> inside the folder to get the new week’s files. Then, in RStudio, point R at the course folder (<em>Session → Set Working Directory → Choose Directory…</em>) and run, in the console:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">load</span>()      <span class="co"># switch this R session to the course's package library</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">restore</span>()   <span class="co"># install this week's packages (section 1.2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Option B: set it up by hand.</strong></p>
+<ol type="1">
+<li>Create a folder called <code>psy40760-practicals-2026</code> wherever you keep your work.</li>
+<li>In RStudio, point R at that folder (<em>Session → Set Working Directory → Choose Directory…</em>) and create the marker file (step 2 below).</li>
+<li>Download each seminar folder and place it inside the course folder exactly as in the tree above.</li>
+<li>Set up renv once and install this week’s packages (step 4 below). Here the folder is your own project, so you install the packages yourself.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: an empty marker file; it is hidden because the name starts with a dot</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">file.create</span>(<span class="st">".root-practicals"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: set up renv and install this week's packages</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">init</span>()                               <span class="co"># creates .Rprofile, renv.lock and renv/</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">install</span>(<span class="fu">c</span>(<span class="st">"here"</span>, <span class="st">"dplyr"</span>, <span class="st">"tidyr"</span>))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()                           <span class="co"># records the versions in renv.lock</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Either way, you do not need to create an RStudio Project: renv takes care of the packages, and the <code>.root-practicals</code> file takes care of finding the data.</p>
+</section>
+<section id="datacamp" class="level3">
+<h3 class="anchored" data-anchor-id="datacamp">2. DataCamp</h3>
+<p>This week’s two DataCamp courses are listed under Part 2. Use the same UCD account as last week.</p>
+</section>
+<section id="reading" class="level3">
+<h3 class="anchored" data-anchor-id="reading">3. Reading</h3>
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td><strong>Theory</strong></td>
+<td><em>Statistical Thinking for the 21st Century</em> (Poldrack) — <a href="https://statsthinking21.github.io/statsthinking21-core-site/ci-effect-size-power.html">Ch. 10, Quantifying effects and designing studies</a></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><em>Modern Statistics with R</em> — <a href="https://www.modernstatisticswithr.com/basicstatistics.html">Ch. 3, The cornerstones of statistics</a> (especially §3.5 Confidence intervals and §3.6 Comparing mean values)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Lakens, D. (2013). <a href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2013.00863/full">Calculating and reporting effect sizes to facilitate cumulative science: a practical primer for t-tests and ANOVAs</a>. <em>Frontiers in Psychology</em>, 4, 863.</td>
+</tr>
+<tr class="even">
+<td><strong>Practical</strong></td>
+<td><em>Statistical Thinking for the 21st Century</em> (Poldrack) — <a href="https://statsthinking21.github.io/statsthinking21-core-site/summarizing-data.html">Ch. 3, Summarizing data</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="todays-session" class="level2">
+<h2 class="anchored" data-anchor-id="todays-session">Today’s session</h2>
+<p><strong>Theory:</strong> what a hypothesis test returns and what it does not; the sampling distribution and the standard error; the normal and t-distributions and degrees of freedom; confidence intervals and what the 95% guarantees; unstandardised and standardised effect sizes (and how <em>t</em> differs from Cohen’s <em>d</em>); meta-analysis and selection for significance.</p>
+<p><strong>Practical:</strong> by the end you should be able to point R at a file with a relative path built by <code>here()</code>, manage packages with renv and load them, work with the t-distribution in R (density, critical values, probabilities), import a <code>.csv</code> file, wrangle it with <code>dplyr</code>, and compute confidence intervals and effect sizes, choosing the effect size that fits the question.</p>
+<p>The session runs in three parts: a <strong>joint walkthrough</strong> (Part 1), <strong>independent DataCamp work</strong> (Part 2), and <strong>in-notebook exercises</strong> (Part 3). The <strong>challenges</strong> at the end are optional.</p>
+</section>
+<section id="assessment" class="level2">
+<h2 class="anchored" data-anchor-id="assessment">Assessment</h2>
+<p><strong>Deadline for completion:</strong> Sunday 11 October, 23:59.</p>
+<ol type="1">
+<li>Complete the two assigned DataCamp courses (“Introduction to Importing Data in R” and “Data Manipulation with dplyr”).</li>
+<li>Submit Worksheet 2 as a fully runnable <code>.qmd</code> file with the Part 3 exercises completed.</li>
+<li>Optional: the challenge exercises, and pushing your code to a GitHub repository (please still submit the <code>.qmd</code> file on Brightspace).</li>
+</ol>
+<p>Name the file using your Student Number and surname as prefix, e.g.&nbsp;<code>2332334_Smith_worksheet_02.qmd</code></p>
+<p>Assignments 1 and 2 are mandatory and constitute 3% of your grade (pass/fail). Assignment 3 is optional and voluntary.</p>
+<hr>
+</section>
+<section id="part-1-joint-walkthrough" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-joint-walkthrough">Part 1: Joint walkthrough</h2>
+<p>We will work through this section together. Run each chunk as we go and make sure you understand the output before moving on.</p>
+<section id="section-a-files-packages-and-paths" class="level3">
+<h3 class="anchored" data-anchor-id="section-a-files-packages-and-paths">Section A: Files, packages and paths</h3>
+<section id="where-is-r-looking-working-directories-and-paths" class="level4">
+<h4 class="anchored" data-anchor-id="where-is-r-looking-working-directories-and-paths">1.1 Where is R looking? Working directories and paths</h4>
+<p>Every file on a computer has a <strong>path</strong>: the list of folders you pass through to reach it. When you ask R to read a file, R has to find it, and it starts looking in the <strong>working directory</strong>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()          <span class="co"># the folder R is currently working in</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>()     <span class="co"># the files and folders inside it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>There are two ways to write a path:</p>
+<ul>
+<li>an <strong>absolute path</strong> starts from the top of the computer, e.g.&nbsp;<code>"/Users/ondrej/Documents/psy40760/seminar-02-worksheet_files/weight_trial.csv"</code> (Mac) or <code>"C:/Users/ondrej/Documents/psy40760/..."</code> (Windows);</li>
+<li>a <strong>relative path</strong> starts from the working directory, e.g.&nbsp;<code>"seminar-02-worksheet_files/weight_trial.csv"</code>.</li>
+</ul>
+<p>An absolute path only works on the computer it was written on: your colleague does not have a folder called <code>/Users/ondrej</code>. Relative paths travel with the project, which is what we want.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">file.exists</span>(<span class="st">"seminar-02-worksheet_files/weight_trial.csv"</span>)   <span class="co"># relative path: TRUE if R can find it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Two special symbols appear in relative paths: <code>.</code> means “this folder” and <code>..</code> means “one folder up”. So <code>"../data/file.csv"</code> means “go up one folder, then into <code>data</code>”.</p>
+<p><strong>The catch:</strong> a relative path is only correct if the working directory is what you think it is. When you type in the console, the working directory is whatever you pointed R at (here, the course folder); when you run a chunk of a <code>.qmd</code>, or render it, it is the folder the <code>.qmd</code> sits in. If these differ, the same line of code finds the file in one case and fails in the other. You may be tempted to fix this with <code>setwd("/Users/...")</code>, but that puts an absolute path back into your code. Section 1.3 shows a better solution, which needs a package, so packages come first.</p>
+<p><strong>Try it:</strong> run <code>list.files("seminar-02-worksheet_files")</code>. What files are in this week’s data folder?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="packages-installing-loading-and-managing" class="level4">
+<h4 class="anchored" data-anchor-id="packages-installing-loading-and-managing">1.2 Packages: installing, loading and managing</h4>
+<p>Base R can do a lot, but most work in R relies on <strong>packages</strong>: bundles of functions written by others. Most are distributed through CRAN, R’s official repository.</p>
+<p>In this module we manage packages with <strong>renv</strong>. renv gives each project its own package library and records the exact version of every package in a file called <code>renv.lock</code>, so the code runs the same on your laptop, on ours, and in a year’s time. The only time you use <code>install.packages()</code> is to install renv itself (you did this before Seminar 1):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"renv"</span>)   <span class="co"># once per computer; never needed again for other packages</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>There are two separate steps, and it helps to keep them apart:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Function</th>
+<th>How often</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Install</strong> (into the project library)</td>
+<td><code>renv::restore()</code> in the course project; <code>renv::install("here")</code> in your own projects</td>
+<td>when <code>renv.lock</code> changes, or when you add a package</td>
+</tr>
+<tr class="even">
+<td><strong>Load</strong> (make available in this session)</td>
+<td><code>library(here)</code></td>
+<td>every session, at the top of your script</td>
+</tr>
+</tbody>
+</table>
+<p>The course repository already lists this week’s packages (<code>here</code>, <code>dplyr</code>, <code>tidyr</code>) in its <code>renv.lock</code>. After <code>git pull</code> and <code>renv::load()</code> (see “Before you arrive”), run, <strong>in the console</strong>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">restore</span>()   <span class="co"># installs exactly the versions recorded in renv.lock</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">status</span>()    <span class="co"># checks that the project library matches renv.lock</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Run these in the console, not in the worksheet: an install line inside a <code>.qmd</code> would run again every time the document is rendered.</p>
+<p>Check that a package is installed, and which version you have:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">requireNamespace</span>(<span class="st">"dplyr"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)   <span class="co"># TRUE if installed</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">"dplyr"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] '1.2.0'</code></pre>
+</div>
+</div>
+<p>Now load the packages we use today:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'here' was built under R version 4.4.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at /Users/zika/projects/2026-advanced-stats-mscbn-PSY40760</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'dplyr' was built under R version 4.4.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+</div>
+<p>When <code>dplyr</code> loads it prints a message that some objects are <strong>masked</strong>: <code>dplyr</code> has its own <code>filter()</code> and <code>lag()</code>, which now hide the versions in the <code>stats</code> package. You can always say exactly which one you mean with <code>package::function()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(...)   <span class="co"># dplyr's filter: keep rows</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>stats<span class="sc">::</span><span class="fu">filter</span>(...)   <span class="co"># stats' filter: a time-series operation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The <code>::</code> form also works without <code>library()</code>, which is handy when you need one function from a package once.</p>
+<p>A few management tasks:</p>
+<ul>
+<li><strong>Your own projects:</strong> <code>renv::init()</code> sets up renv in a new project, <code>renv::install("pkg")</code> adds a package, and <code>renv::snapshot()</code> records the versions you use in <code>renv.lock</code>, so that <code>renv::restore()</code> can rebuild the same library on another computer.</li>
+<li><strong>In the course project, do not run <code>renv::snapshot()</code></strong> (or <code>renv::install()</code>): it would change the course’s <code>renv.lock</code> and cause a conflict the next time you <code>git pull</code>. If a new package is needed, it will arrive with the weekly update and <code>renv::restore()</code>.</li>
+<li><code>renv::update()</code> updates the project’s packages and <code>renv::remove("name")</code> removes one (again, only in your own projects).</li>
+<li><code>sessionInfo()</code> lists R’s version and every loaded package: paste it into a help request so others can reproduce your setup.</li>
+</ul>
+<p><strong>Try it:</strong> run <code>renv::status()</code> and check which version of <code>here</code> you have installed.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="relative-paths-with-here" class="level4">
+<h4 class="anchored" data-anchor-id="relative-paths-with-here">1.3 Relative paths with <code>here</code></h4>
+<p><code>here</code> solves the working-directory problem. It finds the <strong>project root</strong> and builds paths from there, whatever the working directory happens to be. In this course we mark the root of the practicals explicitly, with an empty file called <code>.root-practicals</code> (a hidden file: the name starts with a dot, so tick <em>Show Hidden Files</em> in the RStudio Files pane to see it). <code>here::i_am()</code> tells <code>here</code> to use the nearest folder, at or above the current one, that contains this file:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">i_am</span>(<span class="st">".root-practicals"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at /Users/zika/projects/2026-advanced-stats-mscbn-PSY40760/2026-materials/practicals</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">here</span>()    <span class="co"># the practicals root on this computer</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "/Users/zika/projects/2026-advanced-stats-mscbn-PSY40760/2026-materials/practicals"</code></pre>
+</div>
+</div>
+<p><code>here()</code> joins folder and file names into a full path for you. List the folders in order, then the file name:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">here</span>(<span class="st">"seminar-02-confidence-intervals-and-effect-sizes"</span>, <span class="st">"seminar-02-worksheet_files"</span>, <span class="st">"weight_trial.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "/Users/zika/projects/2026-advanced-stats-mscbn-PSY40760/2026-materials/practicals/seminar-02-confidence-intervals-and-effect-sizes/seminar-02-worksheet_files/weight_trial.csv"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">file.exists</span>(<span class="fu">here</span>(<span class="st">"seminar-02-confidence-intervals-and-effect-sizes"</span>, <span class="st">"seminar-02-worksheet_files"</span>, <span class="st">"weight_trial.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>The code contains no absolute path, yet it gives R a complete one on every computer. The same line works when you run the chunk and when you render the document, on your laptop and on ours.</p>
+<p>If <code>i_am()</code> gives an error, R could not find <code>.root-practicals</code> in the current folder or any folder above it: check with <code>getwd()</code> that your working directory is inside the course folder, and that <code>.root-practicals</code> is at its top (see “Before you arrive”).</p>
+<p>With a path in hand, reading the file is one line. You met <code>read.csv()</code> last week:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>trial <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"seminar-02-confidence-intervals-and-effect-sizes"</span>, <span class="st">"seminar-02-worksheet_files"</span>, <span class="st">"weight_trial.csv"</span>))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trial)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    id   site     group    sex age weight_start_kg weight_end_kg wellbeing
+1 P001 Dublin   control female  42            72.4          81.5        28
+2 P002   Cork programme female  44            89.3          86.4        32
+3 P003   Cork programme female  22            73.2          67.8        30
+4 P004   Cork   control female  43           100.0         105.8        14
+5 P005 Galway   control female  34            88.2          91.7        17
+6 P006 Dublin programme   male  26            86.9          86.4         9</code></pre>
+</div>
+</div>
+<p>We will come back to this data set in Part 3.</p>
+</section>
+</section>
+<section id="section-b-the-t-distribution-and-probabilities" class="level3">
+<h3 class="anchored" data-anchor-id="section-b-the-t-distribution-and-probabilities">Section B: The t-distribution and probabilities</h3>
+<p>With files and packages in place, we now turn to the statistics of the lecture: the t-distribution, critical values, and the probability of an event.</p>
+<section id="from-the-normal-distribution-to-the-t-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="from-the-normal-distribution-to-the-t-distribution">1.4 From the normal distribution to the t-distribution</h4>
+<p>In the lecture, the sampling distribution of an estimate was approximated by the normal distribution, or by the t-distribution when the spread has to be estimated from the data. R has functions for both. We will build a picture of them in small steps.</p>
+<p><strong>Step 1.</strong> Make a grid of values along the x-axis.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="at">length.out =</span> <span class="dv">200</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -4.000000 -3.959799 -3.919598 -3.879397 -3.839196 -3.798995</code></pre>
+</div>
+</div>
+<p><strong>Step 2.</strong> <code>dnorm()</code> gives the height of a normal curve at each value. A normal distribution has two <strong>parameters</strong>, its mean and its standard deviation, and <code>dnorm()</code> takes them as inputs: <code>dnorm(x, mean = ..., sd = ...)</code>. With <code>mean = 0</code> and <code>sd = 1</code> we get the <strong>standard normal</strong> distribution. Plot height against x as a line.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="fu">dnorm</span>(x, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"value"</span>, <span class="at">ylab =</span> <span class="st">"density"</span>, <span class="at">main =</span> <span class="st">"The standard normal distribution"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-02-worksheet_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>mean = 0</code> and <code>sd = 1</code> are the defaults: if you leave them out, R uses these values, which is why the code below writes just <code>dnorm(x)</code>. Try changing them, e.g.&nbsp;<code>dnorm(x, mean = 1, sd = 2)</code>: the mean moves the curve along the x-axis, and the SD makes it wider and flatter.</p>
+<p><strong>Step 3.</strong> <code>dt()</code> does the same for the t-distribution. It has one parameter, the <strong>degrees of freedom</strong>, given as <code>df</code>: <code>dt(x, df = ...)</code>. The degrees of freedom count how many independent pieces of information are left for estimating the spread. With one sample of <em>n</em> people, one piece is used up by estimating the mean first, so <code>df = n - 1</code>; with two independent groups, one is used up per group mean, so <code>df = n1 + n2 - 2</code>. Unlike <code>mean</code> and <code>sd</code> in <code>dnorm()</code>, <code>df</code> has no default: you always have to give it. (There is no mean or SD to set: the t-distribution is already on a standardised scale, centred on 0.) Add a t-distribution with 3 df, i.e.&nbsp;a sample of 4 people, to the plot with <code>lines()</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="fu">dnorm</span>(x), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"value"</span>, <span class="at">ylab =</span> <span class="st">"density"</span>, <span class="at">main =</span> <span class="st">"Normal vs t with 3 df"</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x, <span class="fu">dt</span>(x, <span class="at">df =</span> <span class="dv">3</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"orange"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-02-worksheet_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The t-distribution is lower in the middle and has <strong>heavier tails</strong>: extreme values are more likely. This is the price of estimating the spread from a small sample.</p>
+<p><strong>Step 4.</strong> Several degrees of freedom on one plot, with a legend.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>dfs  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">30</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"orange"</span>, <span class="st">"darkgreen"</span>, <span class="st">"blue"</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="fu">dnorm</span>(x), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">"black"</span>,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"value"</span>, <span class="at">ylab =</span> <span class="st">"density"</span>, <span class="at">main =</span> <span class="st">"t-distributions with different df"</span>)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) {</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(x, <span class="fu">dt</span>(x, <span class="at">df =</span> dfs[i]), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> cols[i])</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"normal"</span>, <span class="fu">paste</span>(<span class="st">"t, df ="</span>, dfs)),</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, cols), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-02-worksheet_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As the degrees of freedom grow, the t-distribution becomes indistinguishable from the normal. At 30 df the two lines almost overlap.</p>
+<p><strong>Try it:</strong> plot the normal curve together with a t-distribution with 100 df. Can you see any difference?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="the-critical-t-value" class="level4">
+<h4 class="anchored" data-anchor-id="the-critical-t-value">1.5 The critical t-value</h4>
+<p>A 95% confidence interval uses the value that cuts off the middle 95% of the distribution: 2.5% in each tail. Such a value is a <strong>quantile</strong>, and the <code>q</code> functions return quantiles: you give them a probability, they return the value.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.975</span>)          <span class="co"># normal: 97.5% of the distribution lies below 1.96</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.959964</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">5</span>)     <span class="co"># t with 5 df: the cut-off is further out</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.570582</code></pre>
+</div>
+</div>
+<p>Why 0.975 and not 0.95? We want 2.5% in the upper tail, so 97.5% lies below the cut-off.</p>
+<p>The critical value shrinks towards 1.96 as the degrees of freedom grow:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>dfs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">24</span>, <span class="dv">46</span>, <span class="dv">100</span>, <span class="dv">1000</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> dfs), <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.303 2.571 2.228 2.064 2.013 1.984 1.962</code></pre>
+</div>
+</div>
+<p>Trial A in the lecture had 24 + 24 − 2 = 46 df, hence its critical value of 2.013.</p>
+<p>Now mark the critical values on the plot. <code>abline(v = ...)</code> draws vertical lines, and <code>polygon()</code> shades the two tails.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>df   <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>crit <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> df)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="fu">dt</span>(x, <span class="at">df =</span> df), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"t"</span>, <span class="at">ylab =</span> <span class="st">"density"</span>, <span class="at">main =</span> <span class="st">"t with 5 df: the middle 95% and the two 2.5% tails"</span>)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">c</span>(<span class="sc">-</span>crit, crit), <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>upper <span class="ot">&lt;-</span> x[x <span class="sc">&gt;=</span> crit]</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(crit, upper, <span class="fu">max</span>(upper)), <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">dt</span>(upper, df), <span class="dv">0</span>), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>lower <span class="ot">&lt;-</span> x[x <span class="sc">&lt;=</span> <span class="sc">-</span>crit]</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(<span class="fu">min</span>(lower), lower, <span class="sc">-</span>crit), <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">dt</span>(lower, df), <span class="dv">0</span>), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(crit, <span class="fl">0.3</span>, <span class="fu">paste</span>(<span class="st">"t ="</span>, <span class="fu">round</span>(crit, <span class="dv">3</span>)), <span class="at">pos =</span> <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-02-worksheet_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Try it:</strong> find the critical value for a <strong>99%</strong> interval with 20 df. Is it larger or smaller than the 95% one, and why?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="probabilities-the-density-and-the-cumulative-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="probabilities-the-density-and-the-cumulative-distribution">1.6 Probabilities: the density and the cumulative distribution</h4>
+<p>For a continuous variable, the height of the curve (the <strong>density</strong>) is not a probability. Probabilities are <strong>areas</strong> under the curve. Two functions answer two different questions:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Question it answers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>dt(q, df)</code></td>
+<td>How high is the curve at <code>q</code>? (a density, not a probability)</td>
+</tr>
+<tr class="even">
+<td><code>pt(q, df)</code></td>
+<td>What is the probability of a value <strong>at or below</strong> <code>q</code>? (the area to the left)</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dt</span>(<span class="fl">1.5</span>, <span class="at">df =</span> <span class="dv">10</span>)   <span class="co"># height of the curve at 1.5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1274448</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pt</span>(<span class="fl">1.5</span>, <span class="at">df =</span> <span class="dv">10</span>)   <span class="co"># P(T &lt;= 1.5)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9177463</code></pre>
+</div>
+</div>
+<p>The probability of any <strong>single exact value</strong>, such as exactly 1.5, is zero: a line has no area. We can only ask about ranges of values.</p>
+<p><code>pt()</code> is the <strong>cumulative distribution function</strong>: it adds up the area from the far left up to <code>q</code>. Plotting it against <code>q</code> gives an S-shaped curve that rises from 0 to 1.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))   <span class="co"># two plots side by side</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="fu">dt</span>(x, df), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">"t"</span>, <span class="at">ylab =</span> <span class="st">"density"</span>, <span class="at">main =</span> <span class="st">"Density: dt()"</span>)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>left <span class="ot">&lt;-</span> x[x <span class="sc">&lt;=</span> <span class="fl">1.5</span>]</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(<span class="fu">min</span>(left), left, <span class="fl">1.5</span>), <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">dt</span>(left, df), <span class="dv">0</span>), <span class="at">col =</span> <span class="st">"lightblue"</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x, <span class="fu">dt</span>(x, df), <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="fu">pt</span>(x, df), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">"t"</span>, <span class="at">ylab =</span> <span class="st">"P(T &lt;= t)"</span>, <span class="at">main =</span> <span class="st">"Cumulative: pt()"</span>)</span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fl">1.5</span>, <span class="fu">pt</span>(<span class="fl">1.5</span>, df), <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">cex =</span> <span class="fl">1.5</span>)</span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="fu">pt</span>(<span class="fl">1.5</span>, df), <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-02-worksheet_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))   <span class="co"># back to one plot at a time</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The shaded <strong>area</strong> on the left and the <strong>height</strong> of the point on the right are the same number, 0.918.</p>
+<p>The four functions for each distribution follow one naming pattern. For the t-distribution:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Prefix</th>
+<th>Function</th>
+<th>Gives</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>d</code></td>
+<td><code>dt()</code></td>
+<td>density (height of the curve)</td>
+</tr>
+<tr class="even">
+<td><code>p</code></td>
+<td><code>pt()</code></td>
+<td>probability of a value at or below <code>q</code></td>
+</tr>
+<tr class="odd">
+<td><code>q</code></td>
+<td><code>qt()</code></td>
+<td>the value below which a given probability lies (the inverse of <code>pt()</code>)</td>
+</tr>
+<tr class="even">
+<td><code>r</code></td>
+<td><code>rt()</code></td>
+<td>random draws from the distribution</td>
+</tr>
+</tbody>
+</table>
+<p>The same pattern holds for the normal (<code>dnorm</code>, <code>pnorm</code>, <code>qnorm</code>, <code>rnorm</code>) and for other distributions.</p>
+<p><strong>Try it:</strong> check that <code>qt()</code> undoes <code>pt()</code>: compute <code>pt(1.5, df = 10)</code>, then feed the result into <code>qt()</code> with the same df.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="bigger-than-smaller-than-and-between" class="level4">
+<h4 class="anchored" data-anchor-id="bigger-than-smaller-than-and-between">1.7 Bigger than, smaller than, and between</h4>
+<p><code>pt()</code> always gives the area to the <strong>left</strong>. Every other question can be built from it.</p>
+<p><strong>Smaller than</strong> a value:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pt</span>(<span class="dv">2</span>, <span class="at">df =</span> <span class="dv">10</span>)                       <span class="co"># P(T &lt;= 2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.963306</code></pre>
+</div>
+</div>
+<p><strong>Bigger than</strong> a value: the total area is 1, so subtract.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(<span class="dv">2</span>, <span class="at">df =</span> <span class="dv">10</span>)                   <span class="co"># P(T &gt; 2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.03669402</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pt</span>(<span class="dv">2</span>, <span class="at">df =</span> <span class="dv">10</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)   <span class="co"># the same, asked directly</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.03669402</code></pre>
+</div>
+</div>
+<p><strong>Between</strong> two values: the area to the left of the upper value, minus the area to the left of the lower value.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pt</span>(<span class="dv">2</span>, <span class="at">df =</span> <span class="dv">10</span>) <span class="sc">-</span> <span class="fu">pt</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="at">df =</span> <span class="dv">10</span>)     <span class="co"># P(-1 &lt; T &lt; 2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7928594</code></pre>
+</div>
+</div>
+<p><strong>More extreme than</strong> a value in either direction. This is the <strong>two-sided p-value</strong>: the probability of a t at least this far from 0, if the null hypothesis were true. Because the distribution is symmetric, double one tail.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="sc">-</span><span class="fu">abs</span>(<span class="dv">2</span>), <span class="at">df =</span> <span class="dv">10</span>)             <span class="co"># P(|T| &gt;= 2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.07338803</code></pre>
+</div>
+</div>
+<p>Check this against Trial A from the lecture: t(46) = 3.03, p = .004.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="sc">-</span><span class="fl">3.03</span>, <span class="at">df =</span> <span class="dv">46</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.004004523</code></pre>
+</div>
+</div>
+<p>The same reasoning works for any normal distribution. <code>pnorm()</code> takes the mean and SD directly. Suppose weight change over 12 weeks in a control group is normally distributed with mean 1 kg and SD 5 kg. What proportion of people lose more than 5 kg?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="dv">5</span>, <span class="at">mean =</span> <span class="dv">1</span>, <span class="at">sd =</span> <span class="dv">5</span>)               <span class="co"># P(loss &gt; 5)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2118554</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">2</span>, <span class="at">mean =</span> <span class="dv">1</span>, <span class="at">sd =</span> <span class="dv">5</span>) <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="dv">0</span>, <span class="at">mean =</span> <span class="dv">1</span>, <span class="at">sd =</span> <span class="dv">5</span>)   <span class="co"># P(0 &lt; loss &lt; 2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1585194</code></pre>
+</div>
+</div>
+<p><strong>Try it:</strong> with the same distribution (mean 1 kg, SD 5 kg), what proportion of people <strong>gain</strong> weight, i.e.&nbsp;have a weight loss below 0?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<hr>
+</section>
+</section>
+</section>
+<section id="part-2-datacamp" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-datacamp">Part 2: DataCamp</h2>
+<p>Complete the following two assigned courses on DataCamp. They count towards your grade (see Assessment above).</p>
+<ul>
+<li><a href="https://app.datacamp.com/learn/courses/introduction-to-importing-data-in-r"><strong>Introduction to Importing Data in R</strong></a>: reading flat files with <code>read.csv()</code>, <code>read.delim()</code> and <code>read.table()</code>, file paths, column names and column classes.</li>
+<li><a href="https://app.datacamp.com/learn/courses/data-manipulation-with-dplyr"><strong>Data Manipulation with dplyr</strong></a>: <code>select()</code>, <code>filter()</code>, <code>arrange()</code>, <code>mutate()</code>, <code>count()</code>, <code>group_by()</code> + <code>summarize()</code>, and chaining them with the pipe <code>%&gt;%</code>.</li>
+</ul>
+<p>Part 3 uses both, so it is worth doing the DataCamp courses first.</p>
+<hr>
+</section>
+<section id="part-3-exercises-in-rstudio" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-exercises-in-rstudio">Part 3: Exercises in RStudio</h2>
+<p>These exercises are completed independently, in this notebook. All 30 are mandatory. Write your code in the chunks provided and check each result before moving on. Where a question asks you to explain or interpret, write your answer as a comment (<code>#</code>) in the chunk, or as text below it.</p>
+<p><strong>The data.</strong> <code>weight_trial.csv</code> comes from a fictional (simulated) 12-week trial of a weight-loss programme. Participants were randomised to the <strong>programme</strong> or to a <strong>control</strong> group at one of three sites. The columns are:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td>participant ID</td>
+</tr>
+<tr class="even">
+<td><code>site</code></td>
+<td>recruitment site: Dublin, Cork or Galway</td>
+</tr>
+<tr class="odd">
+<td><code>group</code></td>
+<td><code>control</code> or <code>programme</code></td>
+</tr>
+<tr class="even">
+<td><code>sex</code>, <code>age</code></td>
+<td>participant’s sex and age (years)</td>
+</tr>
+<tr class="odd">
+<td><code>weight_start_kg</code></td>
+<td>weight at the start (kg)</td>
+</tr>
+<tr class="even">
+<td><code>weight_end_kg</code></td>
+<td>weight after 12 weeks (kg)</td>
+</tr>
+<tr class="odd">
+<td><code>wellbeing</code></td>
+<td>score on a wellbeing questionnaire at 12 weeks (0–40; higher = better)</td>
+</tr>
+</tbody>
+</table>
+<p>As in the lecture, assume that a weight loss is only worth the cost of the programme if it is at least <strong>2 kg</strong> (the smallest effect of interest).</p>
+<p>We use the pipe <code>%&gt;%</code> from <code>dplyr</code>, as in DataCamp. (R also has a built-in pipe, <code>|&gt;</code>, which works the same way for everything we do here.)</p>
+<section id="importing-the-data-15" class="level3">
+<h3 class="anchored" data-anchor-id="importing-the-data-15">Importing the data (1–5)</h3>
+</section>
+<section id="exercise-1-packages" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-1-packages">Exercise 1 — Packages</h3>
+<p>Load the <code>here</code> and <code>dplyr</code> packages.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-2-building-the-path" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-2-building-the-path">Exercise 2 — Building the path</h3>
+<p>Use <code>here()</code> to build the path to <code>weight_trial.csv</code> and store it in a variable called <code>data_path</code>. Use <code>file.exists()</code> to check that R can find the file.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-3-importing" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-3-importing">Exercise 3 — Importing</h3>
+<p>Import the file with <code>read.csv()</code> and store it as <code>trial</code>. How many rows and columns does it have?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-4-checking-what-was-imported" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-4-checking-what-was-imported">Exercise 4 — Checking what was imported</h3>
+<p>Use <code>str()</code> (or <code>glimpse()</code> from <code>dplyr</code>) to look at the column types. Which columns are character, which are numeric? Then use <code>count()</code> to find how many participants are in each group.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-5-missing-values" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-5-missing-values">Exercise 5 — Missing values</h3>
+<p>How many missing values (<code>NA</code>) does each column contain? <em>Hint:</em> <code>is.na()</code> returns <code>TRUE</code>/<code>FALSE</code> for every value, and <code>colSums()</code> adds these up column by column. Which participants have a missing <code>wellbeing</code> score?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="wrangling-612" class="level3">
+<h3 class="anchored" data-anchor-id="wrangling-612">Wrangling (6–12)</h3>
+</section>
+<section id="exercise-6-mutate-the-outcome" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-6-mutate-the-outcome">Exercise 6 — <code>mutate()</code>: the outcome</h3>
+<p>Add a column <code>weight_loss_kg</code> equal to the start weight minus the end weight (so that a positive number means weight was lost). Save the result back into <code>trial</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-7-select-and-relocate" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-7-select-and-relocate">Exercise 7 — <code>select()</code> and <code>relocate()</code></h3>
+<p>Create a smaller data frame <code>trial_small</code> with only <code>id</code>, <code>site</code>, <code>group</code> and <code>weight_loss_kg</code>, in that order. Then, in the full <code>trial</code> data, move <code>weight_loss_kg</code> so that it is the column directly after <code>group</code> (<em>hint:</em> <code>relocate()</code> with <code>.after =</code>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-8-filter" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-8-filter">Exercise 8 — <code>filter()</code></h3>
+<p>How many programme participants lost at least 2 kg? How many control participants did?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-9-arrange-and-slice_max" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-9-arrange-and-slice_max">Exercise 9 — <code>arrange()</code> and <code>slice_max()</code></h3>
+<p>Show the five participants who lost the most weight, with the largest loss first. Which groups are they in?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-10-group_by-and-summarise" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-10-group_by-and-summarise">Exercise 10 — <code>group_by()</code> and <code>summarise()</code></h3>
+<p>For each group, compute the number of participants, the mean and the SD of <code>weight_loss_kg</code>. Store the result as <code>loss_summary</code>; you will need these numbers later.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-11-counting-combinations" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-11-counting-combinations">Exercise 11 — Counting combinations</h3>
+<p>Use <code>count()</code> to show how many participants there are in each combination of <code>site</code> and <code>group</code>. Are the sites the same size?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-12-recoding-with-ifelse" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-12-recoding-with-ifelse">Exercise 12 — Recoding with <code>ifelse()</code></h3>
+<p>Add a column <code>worthwhile</code> that is <code>"yes"</code> if a participant lost at least 2 kg and <code>"no"</code> otherwise. Then compute the <strong>proportion</strong> of <code>"yes"</code> in each group. <em>Hint:</em> <code>mean(worthwhile == "yes")</code> inside <code>summarise()</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="probabilities-1318" class="level3">
+<h3 class="anchored" data-anchor-id="probabilities-1318">Probabilities (13–18)</h3>
+</section>
+<section id="exercise-13-a-normal-model-for-the-control-group" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-13-a-normal-model-for-the-control-group">Exercise 13 — A normal model for the control group</h3>
+<p>Suppose weight loss in the control <strong>population</strong> is normally distributed, with the mean and SD you found for the control group in Exercise 10. Under this model, what is the probability that a control participant loses more than 5 kg? Compare this with the proportion of control participants in the data who actually lost more than 5 kg.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-14-between-two-values" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-14-between-two-values">Exercise 14 — Between two values</h3>
+<p>Under the same model, what is the probability that a control participant’s weight change lies between −2 kg and +2 kg?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-15-smaller-than-for-the-programme-group" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-15-smaller-than-for-the-programme-group">Exercise 15 — Smaller than, for the programme group</h3>
+<p>Now build the same kind of normal model for the <strong>programme</strong> group. What proportion of programme participants would be expected to lose <strong>less</strong> than the 2 kg threshold?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-16-critical-values" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-16-critical-values">Exercise 16 — Critical values</h3>
+<p>For a t-distribution with the degrees of freedom of the programme group alone (n − 1), find the critical values for a 90%, a 95% and a 99% interval. Put them in one vector.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-17-a-t-statistic-by-hand" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-17-a-t-statistic-by-hand">Exercise 17 — A t statistic by hand</h3>
+<p>For the programme group only, test whether the mean weight loss differs from 0. Compute by hand: the mean, the SD, n, the standard error (SE = SD / √n), the t statistic (t = mean / SE) and the two-sided p-value with <code>pt()</code>. Then check your t and p against <code>t.test(x)</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-18-where-does-a-value-lie" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-18-where-does-a-value-lie">Exercise 18 — Where does a value lie?</h3>
+<p>Using your normal model for the programme group (Exercise 15), which weight loss is exceeded by only 10% of programme participants? <em>Hint:</em> this is a quantile, so use <code>qnorm()</code>. Compare it with the empirical value from <code>quantile(x, 0.9)</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="confidence-intervals-1924" class="level3">
+<h3 class="anchored" data-anchor-id="confidence-intervals-1924">Confidence intervals (19–24)</h3>
+</section>
+<section id="exercise-19-a-ci-for-one-mean-by-hand" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-19-a-ci-for-one-mean-by-hand">Exercise 19 — A CI for one mean, by hand</h3>
+<p>Compute the 95% confidence interval for the mean weight loss in the <strong>programme</strong> group by hand: mean ± t<sub>crit</sub> × SE, with t<sub>crit</sub> from <code>qt()</code> and n − 1 degrees of freedom.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-20-the-same-ci-from-t.test" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-20-the-same-ci-from-t.test">Exercise 20 — The same CI from <code>t.test()</code></h3>
+<p>Run <code>t.test()</code> on the programme group’s weight loss and extract the confidence interval with <code>$conf.int</code>. Does it match Exercise 19?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-21-changing-the-confidence-level" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-21-changing-the-confidence-level">Exercise 21 — Changing the confidence level</h3>
+<p>Compute the 90% and the 99% intervals for the same mean (the <code>conf.level</code> argument of <code>t.test()</code>). Which interval is widest? Explain in one sentence why.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-22-a-ci-for-the-difference-between-groups-by-hand" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-22-a-ci-for-the-difference-between-groups-by-hand">Exercise 22 — A CI for the difference between groups, by hand</h3>
+<p>Compute the 95% CI for the <strong>difference</strong> in mean weight loss (programme minus control) by hand, using</p>
+<p><span class="math display">\[SE_{diff} = \sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}\]</span></p>
+<p>and a critical value with n₁ + n₂ − 2 degrees of freedom.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-23-the-same-ci-from-t.test" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-23-the-same-ci-from-t.test">Exercise 23 — The same CI from <code>t.test()</code></h3>
+<p>Run <code>t.test(weight_loss_kg ~ group, data = trial)</code>. Extract the CI, the t statistic and the p-value. Two things to notice: (a) the sign — R subtracts the groups in alphabetical order, so this is control <strong>minus</strong> programme; (b) the interval differs slightly from yours, because <code>t.test()</code> uses the Welch correction for unequal variances, which changes the degrees of freedom. What are its degrees of freedom?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-24-reading-the-interval" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-24-reading-the-interval">Exercise 24 — Reading the interval</h3>
+<p>Compare your interval for the difference with 0 and with the 2 kg threshold. Is the difference statistically significant at the 5% level? Can we conclude that the programme produces a worthwhile loss? Which of the lecture’s two problems, <strong>precision</strong> or <strong>relevance</strong>, does this trial have? Answer in two or three sentences.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your answer here (as comments)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="effect-sizes-2530" class="level3">
+<h3 class="anchored" data-anchor-id="effect-sizes-2530">Effect sizes (25–30)</h3>
+</section>
+<section id="exercise-25-an-unstandardised-effect-size" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-25-an-unstandardised-effect-size">Exercise 25 — An unstandardised effect size</h3>
+<p>Report the effect of the programme on weight as an unstandardised effect size: the mean difference in kg with its 95% CI. Write the one-sentence result as you would in a paper.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-26-cohens-d-by-hand" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-26-cohens-d-by-hand">Exercise 26 — Cohen’s <em>d</em> by hand</h3>
+<p>Compute Cohen’s <em>d</em> for weight loss: the mean difference divided by the pooled SD,</p>
+<p><span class="math display">\[d = \frac{M_1 - M_2}{SD_{pooled}}, \qquad SD_{pooled} = \sqrt{\frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}}\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-27-wellbeing-with-missing-values" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-27-wellbeing-with-missing-values">Exercise 27 — Wellbeing, with missing values</h3>
+<p>Compute the mean difference and Cohen’s <em>d</em> for <code>wellbeing</code> (programme minus control). Remember that four scores are missing: remove them first (e.g.&nbsp;<code>filter(!is.na(wellbeing))</code>), and make sure the <em>n</em> in each group is the number of non-missing scores.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-28-standardised-or-unstandardised" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-28-standardised-or-unstandardised">Exercise 28 — Standardised or unstandardised?</h3>
+<p>For each case below, decide whether you would report an <strong>unstandardised</strong> or a <strong>standardised</strong> effect size, and justify your choice in one sentence (see the lecture and Lakens, 2013):</p>
+<ol type="a">
+<li>the effect of the programme on weight loss, reported to a GP deciding whether to recommend it;</li>
+<li>the effect of the programme on wellbeing (a 0–40 questionnaire);</li>
+<li>comparing this trial’s wellbeing effect with another trial that measured wellbeing on a different, 1–7 scale;</li>
+<li>a reaction-time study reporting how much faster caffeine drinkers are.</li>
+</ol>
+<p>Then report the effect for (a) and (b) accordingly, using your results from Exercises 25–27.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your answers here (as comments), plus any code</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-29-t-and-d-are-not-the-same-number" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-29-t-and-d-are-not-the-same-number">Exercise 29 — <em>t</em> and <em>d</em> are not the same number</h3>
+<p>For two groups of equal size <em>n</em>, t ≈ d × √(n/2). Check this with your <em>d</em> from Exercise 26 and the group size. Then answer: if the trial had recruited four times as many participants and found the same means and SDs, what would happen to <em>d</em>, to <em>t</em> and to the width of the CI?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-30-site-by-site" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-30-site-by-site">Exercise 30 — Site by site</h3>
+<p>Compute the difference in mean weight loss (programme minus control) and its 95% CI <strong>separately for each site</strong>. <em>Hint:</em> <code>filter()</code> one site at a time and run <code>t.test()</code> on it. Which site gives the widest interval, and why? Does any single site on its own show a significant effect? What does this suggest about analysing small subgroups?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<hr>
+</section>
+</section>
+<section id="challenge-exercises-optional" class="level2">
+<h2 class="anchored" data-anchor-id="challenge-exercises-optional">Challenge exercises (optional)</h2>
+<p><strong>These challenges are optional and do not count towards the pass mark.</strong> They are harder and go beyond what we covered together. Try them if you finish early, or come back to them later in the term.</p>
+<p>They use a second data set, <code>weight_followup_wide.csv</code>: a smaller follow-up study (40 people, programme or control) in which each person was weighed four times, at weeks 0, 4, 8 and 12. The data are in <strong>wide format</strong>: one row per person, one column per measurement (<code>weight_wk00</code> … <code>weight_wk12</code>). Most analyses need <strong>long format</strong>: one row per measurement, with a column saying which week it is. Reshaping uses the <code>tidyr</code> package.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="challenge-1-from-wide-to-long" class="level3">
+<h3 class="anchored" data-anchor-id="challenge-1-from-wide-to-long">Challenge 1 — From wide to long</h3>
+<p>Import <code>weight_followup_wide.csv</code> with <code>here()</code> and <code>read.csv()</code>. Use <code>pivot_longer()</code> to turn it into a long data frame <code>followup_long</code> with columns <code>id</code>, <code>group</code>, <code>week</code> and <code>weight_kg</code>. Make <code>week</code> a number (0, 4, 8, 12), not text. <em>Hint:</em> look at the <code>names_to</code>, <code>names_prefix</code> and <code>values_to</code> arguments, and <code>as.numeric()</code>. How many rows does the long data frame have, and why?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="challenge-2-summaries-and-a-plot" class="level3">
+<h3 class="anchored" data-anchor-id="challenge-2-summaries-and-a-plot">Challenge 2 — Summaries and a plot</h3>
+<p>From <code>followup_long</code>, compute the mean weight for each group at each week. Plot the two groups’ means against week in one base-R plot (<code>plot()</code> for the first group, <code>lines()</code> for the second, and a legend).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="challenge-3-change-from-baseline" class="level3">
+<h3 class="anchored" data-anchor-id="challenge-3-change-from-baseline">Challenge 3 — Change from baseline</h3>
+<p>Compute each person’s change from week 0 to week 12. (You can do this in the wide data directly, or go back from long to wide with <code>pivot_wider()</code>.) Then give the difference between groups in mean change, its 95% CI, and Cohen’s <em>d</em>. Compare with the main trial: which study estimates the effect more precisely, and why?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="challenge-4-within-subject-effect-sizes" class="level3">
+<h3 class="anchored" data-anchor-id="challenge-4-within-subject-effect-sizes">Challenge 4 — Within-subject effect sizes</h3>
+<p>For the <strong>programme</strong> group only, compare week 0 with week 12 within the same people. Run a paired t-test (<code>t.test(x, y, paired = TRUE)</code>). Then compute two versions of Cohen’s <em>d</em> (Lakens, 2013):</p>
+<ul>
+<li><em>d</em><sub>z</sub> = mean of the differences / SD of the differences;</li>
+<li><em>d</em><sub>av</sub> = mean of the differences / average of the SDs at week 0 and week 12.</li>
+</ul>
+<p>Why are they so different? Which would you report, and when?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="challenge-5-writing-functions-and-testing-the-95" class="level3">
+<h3 class="anchored" data-anchor-id="challenge-5-writing-functions-and-testing-the-95">Challenge 5 — Writing functions and testing the 95%</h3>
+<ol type="a">
+<li><p>Write a function <code>ci_mean(x, level = 0.95)</code> that returns the confidence interval for the mean of <code>x</code>, and a function <code>cohens_d(x, y)</code> that returns Cohen’s <em>d</em> with the pooled SD. Check both against your earlier answers.</p></li>
+<li><p>Use <code>ci_mean()</code> to test what “95%” means. Draw 1,000 samples of size 10 from a normal distribution with mean 2 and SD 5 (<code>rnorm()</code>), compute the interval for each, and count how often it contains the true mean of 2. Repeat with samples of size 100. What changes, and what stays the same?</p></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
