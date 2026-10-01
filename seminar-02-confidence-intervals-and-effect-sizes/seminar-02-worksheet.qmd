@@ -17,8 +17,8 @@ This is the worksheet for our second session. It lists the reading and the to-do
 
 ## Session at a glance
 
-| | |
-|---|---|
+|  |  |
+|----|----|
 | **Workshop Date** | Wednesday 30 September 2026 |
 | **Due Date** | Sunday 11 October 2026, 23:59 |
 | **Time** | 14:00 – 16:50 (170 min) |
@@ -33,7 +33,7 @@ This is the worksheet for our second session. It lists the reading and the to-do
 
 All practicals of the module live in **one course folder**, with the same structure on every computer. For the first two seminars it looks like this:
 
-```
+```         
 psy40760-practicals-2026/          <- the course folder (the "root")
 ├── .root-practicals               <- empty marker file: marks the root (section 1.3)
 ├── .Rprofile                      <- renv set-up files (section 1.2)
@@ -48,18 +48,57 @@ psy40760-practicals-2026/          <- the course folder (the "root")
         ├── weight_trial.csv
         ├── weight_followup_wide.csv
         └── simulate_datasets.R
-
 ```
 
 The renv files and `.root-practicals` sit at the top of the course folder; each seminar has its own folder below it, holding the worksheet, its `_files` folder (data) and any extra materials. Keep the folder and file names exactly as shown: the code in the worksheets relies on them.
 
 **Option A (easiest): clone the course repository.** Once, in a terminal:
 
-```
+```         
 git clone git@github.com:ozika/psy40760-practicals-2026.git
 ```
 
 Before each practical, run `git pull` inside the folder to get the new week's files. Then, in RStudio, point R at the course folder (*Session → Set Working Directory → Choose Directory…*) and run, in the console:
+
+### Quick step-by-step guide
+
+```{r}
+
+# Cheatsheet
+# tell R where your project lives
+setwd("[put your path here]")
+
+# install renv (you might alrady have it)
+install.packages("renv")
+
+#load renve
+library(renv)
+
+# install here
+renv::install("here")
+
+# load here
+library(here)
+
+# tell here where your home dir is 
+here::i_am(".root-practicals") 
+
+# check that this is correct
+here::here(".root-practicals")
+
+# load the environment
+renv::load(here(".root-practicals"))
+
+# install additional packages
+renv::install("dplyr")
+
+---
+  
+# Common issues 
+#  Error: '\U' used without hex digits in character string (<input>:1:11)
+
+
+```
 
 ```{r}
 #| eval: false
@@ -69,10 +108,10 @@ renv::restore()   # install this week's packages (section 1.2)
 
 **Option B: set it up by hand.**
 
-1. Create a folder called `psy40760-practicals-2026` wherever you keep your work.
-2. In RStudio, point R at that folder (*Session → Set Working Directory → Choose Directory…*) and create the marker file (step 2 below).
-3. Download each seminar folder and place it inside the course folder exactly as in the tree above.
-4. Set up renv once and install this week's packages (step 4 below). Here the folder is your own project, so you install the packages yourself.
+1.  Create a folder called `psy40760-practicals-2026` wherever you keep your work.
+2.  In RStudio, point R at that folder (*Session → Set Working Directory → Choose Directory…*) and create the marker file (step 2 below).
+3.  Download each seminar folder and place it inside the course folder exactly as in the tree above.
+4.  Set up renv once and install this week's packages (step 4 below). Here the folder is your own project, so you install the packages yourself.
 
 ```{r}
 #| eval: false
@@ -93,11 +132,11 @@ This week's two DataCamp courses are listed under Part 2. Use the same UCD accou
 
 ### 3. Reading
 
-| | |
-|---|---|
+|  |  |
+|----|----|
 | **Theory** | *Statistical Thinking for the 21st Century* (Poldrack) — [Ch. 10, Quantifying effects and designing studies](https://statsthinking21.github.io/statsthinking21-core-site/ci-effect-size-power.html) |
-| | *Modern Statistics with R* — [Ch. 3, The cornerstones of statistics](https://www.modernstatisticswithr.com/basicstatistics.html) (especially §3.5 Confidence intervals and §3.6 Comparing mean values) |
-| | Lakens, D. (2013). [Calculating and reporting effect sizes to facilitate cumulative science: a practical primer for t-tests and ANOVAs](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2013.00863/full). *Frontiers in Psychology*, 4, 863. |
+|  | *Modern Statistics with R* — [Ch. 3, The cornerstones of statistics](https://www.modernstatisticswithr.com/basicstatistics.html) (especially §3.5 Confidence intervals and §3.6 Comparing mean values) |
+|  | Lakens, D. (2013). [Calculating and reporting effect sizes to facilitate cumulative science: a practical primer for t-tests and ANOVAs](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2013.00863/full). *Frontiers in Psychology*, 4, 863. |
 | **Practical** | *Statistical Thinking for the 21st Century* (Poldrack) — [Ch. 3, Summarizing data](https://statsthinking21.github.io/statsthinking21-core-site/summarizing-data.html) |
 
 ## Today's session
@@ -112,15 +151,15 @@ The session runs in three parts: a **joint walkthrough** (Part 1), **independent
 
 **Deadline for completion:** Sunday 11 October, 23:59.
 
-1. Complete the two assigned DataCamp courses ("Introduction to Importing Data in R" and "Data Manipulation with dplyr").
-2. Submit Worksheet 2 as a fully runnable `.qmd` file with the Part 3 exercises completed.
-3. Optional: the challenge exercises, and pushing your code to a GitHub repository (please still submit the `.qmd` file on Brightspace).
+1.  Complete the two assigned DataCamp courses ("Introduction to Importing Data in R" and "Data Manipulation with dplyr").
+2.  Submit Worksheet 2 as a fully runnable `.qmd` file with the Part 3 exercises completed.
+3.  Optional: the challenge exercises, and pushing your code to a GitHub repository (please still submit the `.qmd` file on Brightspace).
 
 Name the file using your Student Number and surname as prefix, e.g. `2332334_Smith_worksheet_02.qmd`
 
 Assignments 1 and 2 are mandatory and constitute 3% of your grade (pass/fail). Assignment 3 is optional and voluntary.
 
----
+------------------------------------------------------------------------
 
 ## Part 1: Joint walkthrough
 
@@ -140,8 +179,8 @@ list.files()     # the files and folders inside it
 
 There are two ways to write a path:
 
-- an **absolute path** starts from the top of the computer, e.g. `"/Users/ondrej/Documents/psy40760/seminar-02-worksheet_files/weight_trial.csv"` (Mac) or `"C:/Users/ondrej/Documents/psy40760/..."` (Windows);
-- a **relative path** starts from the working directory, e.g. `"seminar-02-worksheet_files/weight_trial.csv"`.
+-   an **absolute path** starts from the top of the computer, e.g. `"/Users/ondrej/Documents/psy40760/seminar-02-worksheet_files/weight_trial.csv"` (Mac) or `"C:/Users/ondrej/Documents/psy40760/..."` (Windows);
+-   a **relative path** starts from the working directory, e.g. `"seminar-02-worksheet_files/weight_trial.csv"`.
 
 An absolute path only works on the computer it was written on: your colleague does not have a folder called `/Users/ondrej`. Relative paths travel with the project, which is what we want.
 
@@ -174,16 +213,18 @@ install.packages("renv")   # once per computer; never needed again for other pac
 There are two separate steps, and it helps to keep them apart:
 
 | Step | Function | How often |
-|---|---|---|
-| **Install** (into the project library) | `renv::restore()` in the course project; `renv::install("here")` in your own projects | when `renv.lock` changes, or when you add a package |
+|----|----|----|
+| **Install** (into the project library) | `renv::restore()` for the packages in `renv.lock`; `renv::install("pkg")` for anything else, then `renv::snapshot()` | when `renv.lock` changes, or when you add a package |
 | **Load** (make available in this session) | `library(here)` | every session, at the top of your script |
 
-The course repository already lists this week's packages (`here`, `dplyr`, `tidyr`) in its `renv.lock`. After `git pull` and `renv::load()` (see "Before you arrive"), run, **in the console**:
+This week we need `here`, `dplyr` and `tidyr`. After `git pull` and `renv::load()` (see "Before you arrive"), run, **in the console**:
 
 ```{r}
 #| eval: false
-renv::restore()   # installs exactly the versions recorded in renv.lock
-renv::status()    # checks that the project library matches renv.lock
+renv::restore()                             # installs exactly the versions recorded in renv.lock
+renv::install(c("here", "dplyr", "tidyr"))  # adds this week's packages (does nothing if already there)
+renv::snapshot()                            # records them in your renv.lock
+renv::status()                              # checks that the project library matches renv.lock
 ```
 
 Run these in the console, not in the worksheet: an install line inside a `.qmd` would run again every time the document is rendered.
@@ -214,10 +255,10 @@ The `::` form also works without `library()`, which is handy when you need one f
 
 A few management tasks:
 
-- **Your own projects:** `renv::init()` sets up renv in a new project, `renv::install("pkg")` adds a package, and `renv::snapshot()` records the versions you use in `renv.lock`, so that `renv::restore()` can rebuild the same library on another computer.
-- **In the course project, do not run `renv::snapshot()`** (or `renv::install()`): it would change the course's `renv.lock` and cause a conflict the next time you `git pull`. If a new package is needed, it will arrive with the weekly update and `renv::restore()`.
-- `renv::update()` updates the project's packages and `renv::remove("name")` removes one (again, only in your own projects).
-- `sessionInfo()` lists R's version and every loaded package: paste it into a help request so others can reproduce your setup.
+-   **Your own projects:** `renv::init()` sets up renv in a new project, `renv::install("pkg")` adds a package, and `renv::snapshot()` records the versions you use in `renv.lock`, so that `renv::restore()` can rebuild the same library on another computer.
+-   **In the course folder** it works the same way: `renv::install("pkg")`, then `renv::snapshot()`. If `git pull` later complains that `renv.lock` has local changes, see the environment set-up guide.
+-   `renv::update()` updates the project's packages and `renv::remove("name")` removes one.
+-   `sessionInfo()` lists R's version and every loaded package: paste it into a help request so others can reproduce your setup.
 
 **Try it:** run `renv::status()` and check which version of `here` you have installed.
 
@@ -231,7 +272,7 @@ A few management tasks:
 
 ```{r}
 here::i_am(".root-practicals")
-here()    # the practicals root on this computer
+here(".root-practicals")    # the practicals root on this computer
 ```
 
 `here()` joins folder and file names into a full path for you. List the folders in order, then the file name:
@@ -360,7 +401,7 @@ text(crit, 0.3, paste("t =", round(crit, 3)), pos = 4)
 For a continuous variable, the height of the curve (the **density**) is not a probability. Probabilities are **areas** under the curve. Two functions answer two different questions:
 
 | Function | Question it answers |
-|---|---|
+|----|----|
 | `dt(q, df)` | How high is the curve at `q`? (a density, not a probability) |
 | `pt(q, df)` | What is the probability of a value **at or below** `q`? (the area to the left) |
 
@@ -394,7 +435,7 @@ The shaded **area** on the left and the **height** of the point on the right are
 The four functions for each distribution follow one naming pattern. For the t-distribution:
 
 | Prefix | Function | Gives |
-|---|---|---|
+|----|----|----|
 | `d` | `dt()` | density (height of the curve) |
 | `p` | `pt()` | probability of a value at or below `q` |
 | `q` | `qt()` | the value below which a given probability lies (the inverse of `pt()`) |
@@ -456,18 +497,18 @@ pnorm(2, mean = 1, sd = 5) - pnorm(0, mean = 1, sd = 5)   # P(0 < loss < 2)
 # your code here
 ```
 
----
+------------------------------------------------------------------------
 
 ## Part 2: DataCamp
 
 Complete the following two assigned courses on DataCamp. They count towards your grade (see Assessment above).
 
-- [**Introduction to Importing Data in R**](https://app.datacamp.com/learn/courses/introduction-to-importing-data-in-r): reading flat files with `read.csv()`, `read.delim()` and `read.table()`, file paths, column names and column classes.
-- [**Data Manipulation with dplyr**](https://app.datacamp.com/learn/courses/data-manipulation-with-dplyr): `select()`, `filter()`, `arrange()`, `mutate()`, `count()`, `group_by()` + `summarize()`, and chaining them with the pipe `%>%`.
+-   [**Introduction to Importing Data in R**](https://app.datacamp.com/learn/courses/introduction-to-importing-data-in-r): reading flat files with `read.csv()`, `read.delim()` and `read.table()`, file paths, column names and column classes.
+-   [**Data Manipulation with dplyr**](https://app.datacamp.com/learn/courses/data-manipulation-with-dplyr): `select()`, `filter()`, `arrange()`, `mutate()`, `count()`, `group_by()` + `summarize()`, and chaining them with the pipe `%>%`.
 
 Part 3 uses both, so it is worth doing the DataCamp courses first.
 
----
+------------------------------------------------------------------------
 
 ## Part 3: Exercises in RStudio
 
@@ -476,7 +517,7 @@ These exercises are completed independently, in this notebook. All 30 are mandat
 **The data.** `weight_trial.csv` comes from a fictional (simulated) 12-week trial of a weight-loss programme. Participants were randomised to the **programme** or to a **control** group at one of three sites. The columns are:
 
 | Column | Meaning |
-|---|---|
+|----|----|
 | `id` | participant ID |
 | `site` | recruitment site: Dublin, Cork or Galway |
 | `group` | `control` or `programme` |
@@ -752,7 +793,7 @@ Compute the difference in mean weight loss (programme minus control) and its 95%
 # your code here
 ```
 
----
+------------------------------------------------------------------------
 
 ## Challenge exercises (optional)
 
@@ -793,8 +834,8 @@ Compute each person's change from week 0 to week 12. (You can do this in the wid
 
 For the **programme** group only, compare week 0 with week 12 within the same people. Run a paired t-test (`t.test(x, y, paired = TRUE)`). Then compute two versions of Cohen's *d* (Lakens, 2013):
 
-- *d*~z~ = mean of the differences / SD of the differences;
-- *d*~av~ = mean of the differences / average of the SDs at week 0 and week 12.
+-   *d*~z~ = mean of the differences / SD of the differences;
+-   *d*~av~ = mean of the differences / average of the SDs at week 0 and week 12.
 
 Why are they so different? Which would you report, and when?
 
