@@ -6,6 +6,10 @@ execute:
   eval: false   # setup steps are run by hand in the console, not when rendering
 ---
 
+## Basic R/Rstudio understadning
+
+If you are struggling with understadnign how R and RStudio work, read Chapter 3 by D. Navarro: https://learningstatisticswithr.com/03-introR.html
+
 ## Setting up RStudio and Quarto for PSY40760
 
 This is an initial setup that you need to do which involves setting up the paths and environment and installing the relevant packages inside your environment (i.e. "Initial setup").
