@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-10-16">
+
+<title>Seminar 3 — Statistical Power &amp; Communicating Results Through Plots</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="seminar-03-worksheet_files/libs/clipboard/clipboard.min.js"></script>
+<script src="seminar-03-worksheet_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="seminar-03-worksheet_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="seminar-03-worksheet_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="seminar-03-worksheet_files/libs/quarto-html/popper.min.js"></script>
+<script src="seminar-03-worksheet_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="seminar-03-worksheet_files/libs/quarto-html/anchor.min.js"></script>
+<link href="seminar-03-worksheet_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="seminar-03-worksheet_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="seminar-03-worksheet_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="seminar-03-worksheet_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="seminar-03-worksheet_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#worksheet-3" id="toc-worksheet-3" class="nav-link active" data-scroll-target="#worksheet-3">Worksheet 3</a>
+  <ul>
+  <li><a href="#welcome" id="toc-welcome" class="nav-link" data-scroll-target="#welcome">Welcome</a></li>
+  <li><a href="#session-at-a-glance" id="toc-session-at-a-glance" class="nav-link" data-scroll-target="#session-at-a-glance">Session at a glance</a></li>
+  <li><a href="#before-you-arrive" id="toc-before-you-arrive" class="nav-link" data-scroll-target="#before-you-arrive">Before you arrive</a>
+  <ul class="collapse">
+  <li><a href="#environment" id="toc-environment" class="nav-link" data-scroll-target="#environment">1. Environment</a></li>
+  <li><a href="#datacamp" id="toc-datacamp" class="nav-link" data-scroll-target="#datacamp">2. DataCamp</a></li>
+  <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">3. Reading</a></li>
+  </ul></li>
+  <li><a href="#todays-session" id="toc-todays-session" class="nav-link" data-scroll-target="#todays-session">Today’s session</a></li>
+  <li><a href="#part-1-joint-walkthrough" id="toc-part-1-joint-walkthrough" class="nav-link" data-scroll-target="#part-1-joint-walkthrough">Part 1: Joint walkthrough</a>
+  <ul class="collapse">
+  <li><a href="#section-a-power" id="toc-section-a-power" class="nav-link" data-scroll-target="#section-a-power">Section A: Power</a>
+  <ul class="collapse">
+  <li><a href="#qt-the-quantile-function-of-the-t-distribution" id="toc-qt-the-quantile-function-of-the-t-distribution" class="nav-link" data-scroll-target="#qt-the-quantile-function-of-the-t-distribution">1.1 <code>qt()</code>: the quantile function of the t-distribution</a></li>
+  <li><a href="#calculating-power-by-hand" id="toc-calculating-power-by-hand" class="nav-link" data-scroll-target="#calculating-power-by-hand">1.2 Calculating power by hand</a></li>
+  <li><a href="#from-kilograms-to-the-noncentrality-parameter-ncp" id="toc-from-kilograms-to-the-noncentrality-parameter-ncp" class="nav-link" data-scroll-target="#from-kilograms-to-the-noncentrality-parameter-ncp">From kilograms to the noncentrality parameter (ncp)</a></li>
+  <li><a href="#pwr.t.test-the-one-line-version" id="toc-pwr.t.test-the-one-line-version" class="nav-link" data-scroll-target="#pwr.t.test-the-one-line-version">1.3 <code>pwr.t.test()</code>: the one-line version</a></li>
+  <li><a href="#the-observed-power-fallacy" id="toc-the-observed-power-fallacy" class="nav-link" data-scroll-target="#the-observed-power-fallacy">1.4 The observed-power fallacy</a></li>
+  <li><a href="#power-by-simulation" id="toc-power-by-simulation" class="nav-link" data-scroll-target="#power-by-simulation">1.5 Power by simulation</a></li>
+  </ul></li>
+  <li><a href="#section-b-plotting" id="toc-section-b-plotting" class="nav-link" data-scroll-target="#section-b-plotting">Section B: Plotting</a>
+  <ul class="collapse">
+  <li><a href="#the-three-essentials" id="toc-the-three-essentials" class="nav-link" data-scroll-target="#the-three-essentials">1.6 The three essentials</a></li>
+  <li><a href="#layer-by-layer-a-boxplot-that-grows" id="toc-layer-by-layer-a-boxplot-that-grows" class="nav-link" data-scroll-target="#layer-by-layer-a-boxplot-that-grows">1.7 Layer by layer: a boxplot that grows</a></li>
+  <li><a href="#geom_bar-vs.-geom_col" id="toc-geom_bar-vs.-geom_col" class="nav-link" data-scroll-target="#geom_bar-vs.-geom_col">1.8 <code>geom_bar()</code> vs.&nbsp;<code>geom_col()</code></a></li>
+  <li><a href="#colour-as-a-data-type-decision" id="toc-colour-as-a-data-type-decision" class="nav-link" data-scroll-target="#colour-as-a-data-type-decision">1.9 Colour as a data-type decision</a></li>
+  <li><a href="#faceting" id="toc-faceting" class="nav-link" data-scroll-target="#faceting">1.10 Faceting</a></li>
+  <li><a href="#themes" id="toc-themes" class="nav-link" data-scroll-target="#themes">1.11 Themes</a></li>
+  <li><a href="#adjusting-individual-theme-properties" id="toc-adjusting-individual-theme-properties" class="nav-link" data-scroll-target="#adjusting-individual-theme-properties">1.12 Adjusting individual theme properties</a></li>
+  <li><a href="#creating-your-own-theme-and-reusing-it" id="toc-creating-your-own-theme-and-reusing-it" class="nav-link" data-scroll-target="#creating-your-own-theme-and-reusing-it">1.13 Creating your own theme and reusing it</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#part-2-datacamp" id="toc-part-2-datacamp" class="nav-link" data-scroll-target="#part-2-datacamp">Part 2: DataCamp</a></li>
+  <li><a href="#part-3-exercises-in-rstudio" id="toc-part-3-exercises-in-rstudio" class="nav-link" data-scroll-target="#part-3-exercises-in-rstudio">Part 3: Exercises in RStudio</a>
+  <ul class="collapse">
+  <li><a href="#power-16" id="toc-power-16" class="nav-link" data-scroll-target="#power-16">Power (1–6)</a></li>
+  <li><a href="#exercise-1-qt-for-trial-b-mirrors-1.1" id="toc-exercise-1-qt-for-trial-b-mirrors-1.1" class="nav-link" data-scroll-target="#exercise-1-qt-for-trial-b-mirrors-1.1">Exercise 1 — <code>qt()</code> for Trial B [mirrors 1.1]</a></li>
+  <li><a href="#exercise-2-power-by-hand-for-trial-b-mirrors-1.2" id="toc-exercise-2-power-by-hand-for-trial-b-mirrors-1.2" class="nav-link" data-scroll-target="#exercise-2-power-by-hand-for-trial-b-mirrors-1.2">Exercise 2 — Power by hand for Trial B [mirrors 1.2]</a></li>
+  <li><a href="#exercise-3-confirm-with-pwr.t.test-mirrors-1.3" id="toc-exercise-3-confirm-with-pwr.t.test-mirrors-1.3" class="nav-link" data-scroll-target="#exercise-3-confirm-with-pwr.t.test-mirrors-1.3">Exercise 3 — Confirm with <code>pwr.t.test()</code> [mirrors 1.3]</a></li>
+  <li><a href="#exercise-4-trial-bs-own-effect-mirrors-1.4" id="toc-exercise-4-trial-bs-own-effect-mirrors-1.4" class="nav-link" data-scroll-target="#exercise-4-trial-bs-own-effect-mirrors-1.4">Exercise 4 — Trial B’s <em>own</em> effect [mirrors 1.4]</a></li>
+  <li><a href="#exercise-5-power-by-simulation-for-trial-b-mirrors-1.5" id="toc-exercise-5-power-by-simulation-for-trial-b-mirrors-1.5" class="nav-link" data-scroll-target="#exercise-5-power-by-simulation-for-trial-b-mirrors-1.5">Exercise 5 — Power by simulation for Trial B [mirrors 1.5]</a></li>
+  <li><a href="#exercise-6-unequal-sds-once-more-mirrors-1.5" id="toc-exercise-6-unequal-sds-once-more-mirrors-1.5" class="nav-link" data-scroll-target="#exercise-6-unequal-sds-once-more-mirrors-1.5">Exercise 6 — Unequal SDs, once more [mirrors 1.5]</a></li>
+  <li><a href="#plotting-714" id="toc-plotting-714" class="nav-link" data-scroll-target="#plotting-714">Plotting (7–14)</a></li>
+  <li><a href="#exercise-7-first-look-mirrors-1.6" id="toc-exercise-7-first-look-mirrors-1.6" class="nav-link" data-scroll-target="#exercise-7-first-look-mirrors-1.6">Exercise 7 — First look [mirrors 1.6]</a></li>
+  <li><a href="#exercise-8-your-first-plot-mirrors-1.6" id="toc-exercise-8-your-first-plot-mirrors-1.6" class="nav-link" data-scroll-target="#exercise-8-your-first-plot-mirrors-1.6">Exercise 8 — Your first plot [mirrors 1.6]</a></li>
+  <li><a href="#exercise-9-adding-colour-mirrors-1.9" id="toc-exercise-9-adding-colour-mirrors-1.9" class="nav-link" data-scroll-target="#exercise-9-adding-colour-mirrors-1.9">Exercise 9 — Adding colour [mirrors 1.9]</a></li>
+  <li><a href="#exercise-10-a-boxplot-mirrors-1.7" id="toc-exercise-10-a-boxplot-mirrors-1.7" class="nav-link" data-scroll-target="#exercise-10-a-boxplot-mirrors-1.7">Exercise 10 — A boxplot [mirrors 1.7]</a></li>
+  <li><a href="#exercise-11-bar-charts-and-the-y-axis-mirrors-1.8" id="toc-exercise-11-bar-charts-and-the-y-axis-mirrors-1.8" class="nav-link" data-scroll-target="#exercise-11-bar-charts-and-the-y-axis-mirrors-1.8">Exercise 11 — Bar charts and the y axis [mirrors 1.8]</a></li>
+  <li><a href="#exercise-12-one-layer-at-a-time-mirrors-1.7" id="toc-exercise-12-one-layer-at-a-time-mirrors-1.7" class="nav-link" data-scroll-target="#exercise-12-one-layer-at-a-time-mirrors-1.7">Exercise 12 — One layer at a time [mirrors 1.7]</a></li>
+  <li><a href="#exercise-13-faceting-mirrors-1.10" id="toc-exercise-13-faceting-mirrors-1.10" class="nav-link" data-scroll-target="#exercise-13-faceting-mirrors-1.10">Exercise 13 — Faceting [mirrors 1.10]</a></li>
+  <li><a href="#exercise-14-put-it-together-mirrors-1.111.13" id="toc-exercise-14-put-it-together-mirrors-1.111.13" class="nav-link" data-scroll-target="#exercise-14-put-it-together-mirrors-1.111.13">Exercise 14 — Put it together [mirrors 1.11–1.13]</a></li>
+  </ul></li>
+  <li><a href="#extra-optional" id="toc-extra-optional" class="nav-link" data-scroll-target="#extra-optional">Extra (optional)</a>
+  <ul class="collapse">
+  <li><a href="#normal-vs.-t-distribution" id="toc-normal-vs.-t-distribution" class="nav-link" data-scroll-target="#normal-vs.-t-distribution">Normal vs.&nbsp;t-distribution</a></li>
+  <li><a href="#r-tistry" id="toc-r-tistry" class="nav-link" data-scroll-target="#r-tistry">R-tistry</a></li>
+  </ul></li>
+  <li><a href="#reading-assigned-today-due-before-week-10" id="toc-reading-assigned-today-due-before-week-10" class="nav-link" data-scroll-target="#reading-assigned-today-due-before-week-10">Reading assigned today (due before Week 10)</a></li>
+  <li><a href="#where-to-get-help" id="toc-where-to-get-help" class="nav-link" data-scroll-target="#where-to-get-help">Where to get help</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Seminar 3 — Statistical Power &amp; Communicating Results Through Plots</h1>
+<p class="subtitle lead">PSY40760 Advanced Data Analysis and Statistics in R</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 16, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="worksheet-3" class="level1">
+<h1>Worksheet 3</h1>
+<section id="welcome" class="level2">
+<h2 class="anchored" data-anchor-id="welcome">Welcome</h2>
+<p>This week covers two topics:</p>
+<ol type="1">
+<li>Statistical power</li>
+<li>Plotting data in R using ggplot2</li>
+</ol>
+<blockquote class="blockquote">
+<p><em>Much of the materials builds on the running example introduced in Seminar 2: a 12-week weight-loss programme, compared with a control group, where the between-person SD of weight change is 5 kg and the smallest effect worth the cost of the programme is 2 kg. Trial A (n = 24 per group) found 4.37 kg, d = 0.87, t(46) = 3.03, p = .004. Trial B (n = 4,000 per group) found just 0.24 kg, d = 0.05, t(7998) = 2.17, p = .030: also significant, but far below the SESOI of 2 kg (Smallest Effect Size of Interest). You will learn today that the two trials differ sharply in power: Trial A had only 27% power to detect the SESOI (Smallest Effect Size of Interest), whereas Trial B’s was effectively 100%. This session explains those numbers and gives you the tools to compute them for a study of your own.</em></p>
+</blockquote>
+</section>
+<section id="session-at-a-glance" class="level2">
+<h2 class="anchored" data-anchor-id="session-at-a-glance">Session at a glance</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Date</strong></td>
+<td>Friday 16 October 2026</td>
+</tr>
+<tr class="even">
+<td><strong>Room</strong></td>
+<td>QUI-013</td>
+</tr>
+<tr class="odd">
+<td><strong>Time</strong></td>
+<td>170 min</td>
+</tr>
+<tr class="even">
+<td><strong>Staff</strong></td>
+<td>Dr Ondrej Zika, Cameron McCabe</td>
+</tr>
+<tr class="odd">
+<td><strong>Theory</strong></td>
+<td>Statistical power (concepts, <code>pwr</code>, power by simulation); communicating results through plots</td>
+</tr>
+<tr class="even">
+<td><strong>Practical</strong></td>
+<td>Power (<code>pwr</code>, then by simulation) and plotting (<code>ggplot2</code>), each a joint walkthrough followed by exercises</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="before-you-arrive" class="level2">
+<h2 class="anchored" data-anchor-id="before-you-arrive">Before you arrive</h2>
+<section id="environment" class="level3">
+<h3 class="anchored" data-anchor-id="environment">1. Environment</h3>
+<p>Use the same course folder as Seminar 1 and 2, set up exactly as in the <a href="https://github.com/ozika/psy40760-practicals-2026/blob/main/environment-setup/environment-setup.pdf">environment set-up guide</a>: <code>here</code> finds the project root via <code>.root-practicals</code>, and <code>renv</code> manages the packages. This week adds one new package:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'here' was built under R version 4.4.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at /Users/zika/projects/2026-advanced-stats-mscbn-PSY40760/2026-materials/psy40760-practicals-2026</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">i_am</span>(<span class="st">".root-practicals"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at /Users/zika/projects/2026-advanced-stats-mscbn-PSY40760/2026-materials/psy40760-practicals-2026</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">here</span>()              <span class="co"># print the path to check it's correct</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "/Users/zika/projects/2026-advanced-stats-mscbn-PSY40760/2026-materials/psy40760-practicals-2026"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(renv)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'renv' was built under R version 4.4.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'renv'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    embed, update</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:utils':
+
+    history, upgrade</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    autoload, load, remove, use</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">load</span>(here<span class="sc">::</span><span class="fu">here</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install new package called pwr</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">install</span>(<span class="st">"pwr"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">install</span>(<span class="st">"ggplot2"</span>)   <span class="co"># also fills in any missing helper packages (e.g. labeling)</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">install</span>(<span class="st">"labeling"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">install</span>(<span class="st">"dplyr"</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()           <span class="co"># records them in renv.lock</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>dplyr</code> is already in your library from previous weeks.</p>
+</section>
+<section id="datacamp" class="level3">
+<h3 class="anchored" data-anchor-id="datacamp">2. DataCamp</h3>
+<p>This week’s two courses are listed under Part 2.</p>
+</section>
+<section id="reading" class="level3">
+<h3 class="anchored" data-anchor-id="reading">3. Reading</h3>
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td><strong>Theory</strong></td>
+<td><em>Statistical Thinking for the 21st Century</em> (Poldrack) — <a href="https://statsthinking21.github.io/statsthinking21-core-site/ci-effect-size-power.html">§10.3, Statistical power</a></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Button, K. S., et al.&nbsp;(2013). <a href="https://www.nature.com/articles/nrn3475">Power failure: why small sample size undermines the reliability of neuroscience</a>. <em>Nature Reviews Neuroscience</em>, 14(5), 365–376.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Wickham, H. (2010). <a href="https://vita.had.co.nz/papers/layered-grammar.pdf">A Layered Grammar of Graphics</a>. <em>Journal of Computational and Graphical Statistics</em>.</td>
+</tr>
+<tr class="even">
+<td><strong>Practical</strong></td>
+<td><em>Modern Statistics with R</em> — the data visualisation / <code>ggplot2</code> chapter.</td>
+</tr>
+<tr class="odd">
+<td>** **</td>
+<td>. <em>The Art of Visualization with ggplot2</em> https://nrennie.rbind.io/art-of-viz/</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bonus (optional):</strong> R-tistry — generative art made entirely with R code. Explore it, then submit a piece; the class and the wider Psychology department vote, and the winner receives an important statistical award. Not assessed — see the Extra section at the end for the brief and the links.</p>
+</section>
+</section>
+<section id="todays-session" class="level2">
+<h2 class="anchored" data-anchor-id="todays-session">Today’s session</h2>
+<p><strong>Theory:</strong> the four ingredients of statistical power; the <code>pwr</code> package and why “observed power” is circular; power by simulation and why it generalises beyond what a formula can handle; why underpowered research drives the replication crisis; three principles for communicating results through plots; the grammar of graphics.</p>
+<p><strong>Practical:</strong> two joint walkthroughs (power, then plotting), the same two topics as independent exercises, and an optional Extra section (normal vs.&nbsp;t-distribution, R-tistry).</p>
+<hr>
+</section>
+<section id="part-1-joint-walkthrough" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-joint-walkthrough">Part 1: Joint walkthrough</h2>
+<p>We will work through this section together. Run each chunk as we go and make sure you understand the output before moving on. As every week, start by loading the environment:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pwr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'pwr' was built under R version 4.4.1</code></pre>
+</div>
+</div>
+<section id="section-a-power" class="level3">
+<h3 class="anchored" data-anchor-id="section-a-power">Section A: Power</h3>
+<section id="qt-the-quantile-function-of-the-t-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="qt-the-quantile-function-of-the-t-distribution">1.1 <code>qt()</code>: the quantile function of the t-distribution</h4>
+<p>You met <code>qt()</code> in Seminar 2 to find a critical value. Let’s be precise about what it does, because the rest of this section leans on it. <code>qt(p, df)</code> answers: <em>for a t-distribution with <code>df</code> degrees of freedom, what value has probability <code>p</code> below it?</em> It is the exact mirror image of <code>pt()</code>, which you’ll meet in a moment — <code>pt()</code> goes from a value to a probability, <code>qt()</code> goes from a probability to a value.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">46</span>)   <span class="co"># the value with 97.5% of the distribution below it (df = 46, Trial A)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.012896</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.95</span>, <span class="at">df =</span> <span class="dv">46</span>)    <span class="co"># the value with 95% below it — further left, since 95% &lt; 97.5%</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.67866</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.5</span>, <span class="at">df =</span> <span class="dv">46</span>)     <span class="co"># the median: by symmetry, exactly 0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<p><code>qt(0.975, df)</code> is the one you’ll use constantly: it is the two-sided 5%-level critical value, because it leaves 2.5% in each tail (97.5% in the middle plus the 2.5% below it, 2.5% left over above).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">10</span>)    <span class="co"># few degrees of freedom: heavier tails, a bigger critical value...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.228139</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">500</span>)   <span class="co"># ...many degrees of freedom: close to the normal distribution's 1.96</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.96472</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.975</span>)          <span class="co"># the normal distribution's version, for comparison</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.959964</code></pre>
+</div>
+</div>
+<p><strong>Try it:</strong> what is <code>qt(0.995, df = 46)</code> (the critical value for a 1%-level two-sided test), and is it bigger or smaller than <code>qt(0.975, df = 46)</code>? Why does that make sense?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="calculating-power-by-hand" class="level4">
+<h4 class="anchored" data-anchor-id="calculating-power-by-hand">1.2 Calculating power by hand</h4>
+<p>Now the real question: <em>if the programme’s true effect really 2 kg, how likely is a study with n = 24 per group to find it?</em> We build this up from exactly the quantities Seminar 2 already gave you — nothing new except two functions.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>sd        <span class="ot">&lt;-</span> <span class="dv">5</span>      <span class="co"># between-person SD of weight change (both groups)</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>mean_diff <span class="ot">&lt;-</span> <span class="dv">2</span>       <span class="co"># the true effect we're asking about: the SESOI (Smallest Effect Size of Interest)</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>n         <span class="ot">&lt;-</span> <span class="dv">24</span>      <span class="co"># participants per group</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Step 1 — the standard error.</strong> How much would the estimated difference vary from study to study, just from sampling?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> sd <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">/</span> n)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>se</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.443376</code></pre>
+</div>
+</div>
+<p><strong>Step 2 — degrees of freedom and the critical value.</strong> From 1.1:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>df     <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> n <span class="sc">-</span> <span class="dv">2</span> <span class="co"># since n is the same for both studies, otherwise n1 + n2</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>t_crit <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, df)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 46</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>t_crit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.012896</code></pre>
+</div>
+</div>
+<p><strong>Step 3 — the threshold, in kg.</strong> <code>t_crit</code> is in t-units. Multiplying by the SE turns it back into kilograms: any estimated difference bigger than this would come out significant. Note that the threshold comes from H0 alone — it doesn’t care what the true effect is.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>thr <span class="ot">&lt;-</span> t_crit <span class="sc">*</span> se</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>thr</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.905365</code></pre>
+</div>
+</div>
+<p>So Trial A needs to observe a difference of at least about 2.91 kg to reach p &lt; .05.</p>
+<p><strong>Step 4 — where that threshold sits if the true effect is 2 kg.</strong> If the programme really works, estimates from studies like Trial A scatter around 2 kg (not 0), with the same SE. How far above 2 kg is the 2.91 kg threshold, in SE units? That is just a t-score, computed under H1:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>t_h1 <span class="ot">&lt;-</span> (thr <span class="sc">-</span> mean_diff) <span class="sc">/</span> se</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>t_h1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.627255</code></pre>
+</div>
+</div>
+<p>The threshold is only 0.63 SEs above the true effect.</p>
+<p><strong>Step 5 — the areas, with <code>pt()</code>.</strong> <code>pt(x, df)</code> gives the area to the <em>left</em> of <code>x</code>. To the left of the threshold, a real 2 kg effect is missed (β); to the right, it is detected (power):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>beta  <span class="ot">&lt;-</span> <span class="fu">pt</span>(t_h1, df)    <span class="co"># P(estimate below 2.91 kg | true effect = 2 kg): a miss</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>power <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> beta        <span class="co"># P(estimate above 2.91 kg | true effect = 2 kg): a hit</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>beta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7332033</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>power</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2667967</code></pre>
+</div>
+</div>
+<p>About 27%. The same picture in kilograms: the grey curve is H0 (centered on 0 kg), the blue curve is H1 (centered on 2 kg), the dashed line is the 2.91 kg threshold, and power is the shaded blue area to its right:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>kg <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">6</span>, <span class="dv">8</span>, <span class="at">length.out =</span> <span class="dv">400</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>h0 <span class="ot">&lt;-</span> <span class="fu">dt</span>(kg <span class="sc">/</span> se, df) <span class="sc">/</span> se                  <span class="co"># H0: estimates centred on 0 kg</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>h1 <span class="ot">&lt;-</span> <span class="fu">dt</span>((kg <span class="sc">-</span> mean_diff) <span class="sc">/</span> se, df) <span class="sc">/</span> se    <span class="co"># H1: same shape, centred on 2 kg</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(kg, h0, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"grey40"</span>,</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Estimated difference (kg)"</span>, <span class="at">ylab =</span> <span class="st">"density"</span>, <span class="at">main =</span> <span class="st">"Power = blue area beyond the threshold"</span>)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(kg, h1, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"steelblue"</span>)</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>right <span class="ot">&lt;-</span> kg <span class="sc">&gt;=</span> thr</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(thr, kg[right], <span class="fu">max</span>(kg)), <span class="fu">c</span>(<span class="dv">0</span>, h1[right], <span class="dv">0</span>), <span class="at">col =</span> <span class="fu">adjustcolor</span>(<span class="st">"steelblue"</span>, <span class="fl">0.3</span>), <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> thr, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="from-kilograms-to-the-noncentrality-parameter-ncp" class="level4">
+<h4 class="anchored" data-anchor-id="from-kilograms-to-the-noncentrality-parameter-ncp">From kilograms to the noncentrality parameter (ncp)</h4>
+<p>Our 27% (<code>power</code> = 0.267) is very close to Seminar 2’s 27.4%, but not identical. The difference comes from a shortcut in Step 4: we simply slid the H0 t-shape over to 2 kg. Strictly, when H1 is true the test statistic follows a slightly different, slightly skewed distribution called the <strong>noncentral t-distribution</strong>. It is described by one extra number, the <strong>noncentrality parameter (ncp)</strong>: how far the centre of H1 sits from 0, in SE units — that is, the true effect expressed as a t-value.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>ncp <span class="ot">&lt;-</span> mean_diff <span class="sc">/</span> se</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>ncp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.385641</code></pre>
+</div>
+</div>
+<p>You have actually used it already: Step 4’s <code>t_h1</code> is just <code>t_crit - ncp</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>t_crit <span class="sc">-</span> ncp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.627255</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>t_h1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.627255</code></pre>
+</div>
+</div>
+<p>Here is what <code>ncp</code> looks like on the t scale: the grey curve is H0 (centred on 0), the blue curve is H1, and the arrow is the shift between them, <code>ncp</code> = 1.39. The dashed lines are <code>±t_crit</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>xs <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">8</span>, <span class="at">length.out =</span> <span class="dv">400</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xs, <span class="fu">dt</span>(xs, df), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"grey40"</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.47</span>),</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"t"</span>, <span class="at">ylab =</span> <span class="st">"density"</span>, <span class="at">main =</span> <span class="st">"H1 is H0 shifted by ncp"</span>)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(xs, <span class="fu">dt</span>(xs, df, <span class="at">ncp =</span> ncp), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"steelblue"</span>)</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">c</span>(<span class="dv">0</span>, ncp), <span class="at">lty =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"grey40"</span>, <span class="st">"steelblue"</span>))    <span class="co"># centres of H0 and H1</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">c</span>(<span class="sc">-</span>t_crit, t_crit), <span class="at">lty =</span> <span class="dv">2</span>)                            <span class="co"># the critical values</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(<span class="dv">0</span>, <span class="fl">0.43</span>, ncp, <span class="fl">0.43</span>, <span class="at">length =</span> <span class="fl">0.08</span>, <span class="at">code =</span> <span class="dv">3</span>)               <span class="co"># the shift = ncp</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="sc">-</span><span class="fl">0.15</span>, <span class="fl">0.43</span>, <span class="fu">paste</span>(<span class="st">"ncp ="</span>, <span class="fu">round</span>(ncp, <span class="dv">2</span>)), <span class="at">adj =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>R’s <code>pt()</code> accepts an <code>ncp</code> argument, which gives the areas under the exact H1 curve. The test is two-sided, so there are technically two ways to reject H0: far above <code>t_crit</code>, or far below <code>-t_crit</code>. The second is very unlikely here, but we add it in for completeness:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>power_upper <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(t_crit, df, <span class="at">ncp =</span> ncp)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>power_lower <span class="ot">&lt;-</span> <span class="fu">pt</span>(<span class="sc">-</span>t_crit, df, <span class="at">ncp =</span> ncp)</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>power_by_hand <span class="ot">&lt;-</span> power_upper <span class="sc">+</span> power_lower</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>power_upper</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2731946</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>power_lower</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0004544503</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>power_by_hand</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.273649</code></pre>
+</div>
+</div>
+<p>27.4% — exactly Seminar 2’s number. In practice the kilogram method and the exact one agree to within a percentage point or so; the exact one is what <code>pwr.t.test()</code> uses.</p>
+</section>
+<section id="pwr.t.test-the-one-line-version" class="level4">
+<h4 class="anchored" data-anchor-id="pwr.t.test-the-one-line-version">1.3 <code>pwr.t.test()</code>: the one-line version</h4>
+<p>Only now, having done it by hand, bring in the package. The <code>pwr</code> package (Champely) does the calculation from 1.2 for you. Its function for t-tests, <code>pwr.t.test()</code>, links four quantities:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 64%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Argument</th>
+<th>What it is</th>
+<th>Trial A</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>n</code></td>
+<td>participants <strong>per group</strong></td>
+<td>24</td>
+</tr>
+<tr class="even">
+<td><code>d</code></td>
+<td>effect size as Cohen’s d: the true difference / SD</td>
+<td>2 / 5 = 0.4</td>
+</tr>
+<tr class="odd">
+<td><code>sig.level</code></td>
+<td>α, the false-positive rate you accept</td>
+<td>0.05</td>
+</tr>
+<tr class="even">
+<td><code>power</code></td>
+<td>1 − β, the chance of detecting the effect if it is real</td>
+<td>what we want</td>
+</tr>
+</tbody>
+</table>
+<p>These are the four ingredients from the slides, with one twist: the effect (2 kg) and the variability (SD 5 kg) enter together as a single number, <code>d</code>. Only their ratio matters: a 2 kg effect with SD 5 kg is exactly as easy to detect as a 4 kg effect with SD 10 kg.</p>
+<p>The rule is: <strong>give it any three, leave the fourth out, and it solves for the missing one.</strong> Two further arguments describe the design: <code>type</code> (<code>"two.sample"</code>, <code>"one.sample"</code> or <code>"paired"</code>) and <code>alternative</code> (<code>"two.sided"</code> by default).</p>
+<p><strong>Solving for power</strong> (n known): how likely was Trial A to detect a 2 kg effect?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.t.test</span>(<span class="at">n =</span> <span class="dv">24</span>, <span class="at">d =</span> mean_diff <span class="sc">/</span> sd, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">type =</span> <span class="st">"two.sample"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Two-sample t test power calculation 
+
+              n = 24
+              d = 0.4
+      sig.level = 0.05
+          power = 0.273649
+    alternative = two.sided
+
+NOTE: n is number in *each* group</code></pre>
+</div>
+</div>
+<p><code>power</code> should match <code>power_by_hand</code> from 1.2 to several decimal places — <code>pwr.t.test()</code> is running exactly the noncentral-t calculation above, just taking Cohen’s d (<code>mean_diff / sd</code>) instead of the two separately. Note the reminder at the bottom of the output: <code>n</code> is the number in <em>each</em> group.</p>
+<p><strong>Solving for n</strong> (an <em>a priori</em> power analysis, done before collecting data): leave <code>n</code> out and supply <code>power</code> instead, and it solves the equation the other way round — the n you’d need for 80% power:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.t.test</span>(<span class="at">d =</span> mean_diff <span class="sc">/</span> sd, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">power =</span> <span class="fl">0.80</span>, <span class="at">type =</span> <span class="st">"two.sample"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Two-sample t test power calculation 
+
+              n = 99.08032
+              d = 0.4
+      sig.level = 0.05
+          power = 0.8
+    alternative = two.sided
+
+NOTE: n is number in *each* group</code></pre>
+</div>
+</div>
+<p>The answer, 99.08, is not a whole number: always <strong>round up</strong>, so 100 per group (200 in total), roughly four times Trial A’s sample.</p>
+<p><strong>Solving for d</strong> (a <em>sensitivity analysis</em>, useful when n is fixed, e.g.&nbsp;by budget): leave <code>d</code> out. What is the smallest effect Trial A had 80% power to detect?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>sens <span class="ot">&lt;-</span> <span class="fu">pwr.t.test</span>(<span class="at">n =</span> <span class="dv">24</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">power =</span> <span class="fl">0.80</span>, <span class="at">type =</span> <span class="st">"two.sample"</span>)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>sens<span class="sc">$</span>d          <span class="co"># in units of SD</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8261315</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>sens<span class="sc">$</span>d <span class="sc">*</span> sd     <span class="co"># back in kilograms</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.130658</code></pre>
+</div>
+</div>
+<p>Trial A could reliably detect only effects of about 4.1 kg or more, roughly twice the 2 kg that would make the programme worthwhile. You can pull any single value out of the result with <code>$</code>, as here.</p>
+<p><code>pwr</code> has sibling functions that follow the same give-three-get-one rule for other tests, e.g.&nbsp;<code>pwr.r.test()</code> (correlation), <code>pwr.anova.test()</code> (one-way ANOVA) and <code>pwr.chisq.test()</code> (chi-squared). For designs they don’t cover, use simulation (1.5).</p>
+</section>
+<section id="the-observed-power-fallacy" class="level4">
+<h4 class="anchored" data-anchor-id="the-observed-power-fallacy">1.4 The observed-power fallacy</h4>
+<p>Trial A’s own data gave d = 0.87, not the SESOI’s (Smallest Effect Size of Interest) d = 0.40. What happens if you plug the <em>observed</em> effect back in?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.t.test</span>(<span class="at">n =</span> <span class="dv">24</span>, <span class="at">d =</span> <span class="fl">0.87</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">type =</span> <span class="st">"two.sample"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Two-sample t test power calculation 
+
+              n = 24
+              d = 0.87
+      sig.level = 0.05
+          power = 0.8389939
+    alternative = two.sided
+
+NOTE: n is number in *each* group</code></pre>
+</div>
+</div>
+<p>84% power — reassuringly high. But this number is computed from the same data that produced the significant result in the first place, so of course it looks good: a low p-value and a high “observed power” are two views of the same fact, not two independent pieces of evidence. The honest version of this calculation is 1.2/1.3’s: the power to detect an effect you <em>specified in advance</em>, not the effect the data happened to hand you.</p>
+</section>
+<section id="power-by-simulation" class="level4">
+<h4 class="anchored" data-anchor-id="power-by-simulation">1.5 Power by simulation</h4>
+<p>1.2 and 1.3 both work from a mathematical model of the t-distribution. Simulation instead <em>generates</em> many pretend trials and simply counts how often the test comes out significant: no formula, no <code>ncp</code>, just <code>rnorm()</code> and <code>t.test()</code>. We build it up one step at a time.</p>
+<p><strong>Step 1 — write down what we assume is true.</strong> A trial has two groups. For each we need a true mean and a true SD, plus the number of participants per group. These are exactly the assumptions behind 1.2:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>n         <span class="ot">&lt;-</span> <span class="dv">24</span>   <span class="co"># participants per group</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>mean_ctrl <span class="ot">&lt;-</span> <span class="dv">0</span>    <span class="co"># true mean weight loss in the control group (kg)</span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>mean_prog <span class="ot">&lt;-</span> <span class="dv">2</span>    <span class="co"># true mean weight loss in the programme group (kg): a real 2 kg effect</span></span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>sd_ctrl   <span class="ot">&lt;-</span> <span class="dv">5</span>    <span class="co"># true SD in the control group (kg)</span></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>sd_prog   <span class="ot">&lt;-</span> <span class="dv">5</span>    <span class="co"># true SD in the programme group (kg)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Step 2 — generate one pretend trial.</strong> <code>rnorm(n, mean, sd)</code> draws <code>n</code> random values from a normal distribution with that mean and SD. One call per group gives us one complete, made-up dataset:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">18</span>)     <span class="co"># makes the random numbers reproducible</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>control   <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> mean_ctrl, <span class="at">sd =</span> sd_ctrl)</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>programme <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> mean_prog, <span class="at">sd =</span> sd_prog)</span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(control)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.06486246</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(programme)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.173177</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(programme) <span class="sc">-</span> <span class="fu">mean</span>(control)   <span class="co"># the estimated effect in this pretend trial</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.108315</code></pre>
+</div>
+</div>
+<p>Let’s look at it. The black line in each histogram is that group’s sample mean:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">25</span>, <span class="dv">25</span>, <span class="at">by =</span> <span class="fl">2.5</span>)   <span class="co"># same bins for both groups, so they are comparable</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))               <span class="co"># two plots side by side</span></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(control, <span class="at">breaks =</span> breaks, <span class="at">col =</span> <span class="st">"grey80"</span>, <span class="at">main =</span> <span class="st">"Control"</span>, <span class="at">xlab =</span> <span class="st">"Weight loss (kg)"</span>)</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">mean</span>(control), <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(programme, <span class="at">breaks =</span> breaks, <span class="at">col =</span> <span class="st">"steelblue"</span>, <span class="at">main =</span> <span class="st">"Programme"</span>, <span class="at">xlab =</span> <span class="st">"Weight loss (kg)"</span>)</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">mean</span>(programme), <span class="at">lwd =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))               <span class="co"># back to one plot per figure</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The true difference is 2 kg, but the two sample means will not be exactly 2 kg apart: that is sampling error.</p>
+<p><strong>Step 3 — analyse it, exactly as if it were real data.</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">t.test</span>(programme, control, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2107641</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>   <span class="co"># TRUE = significant: this pretend trial detected the effect</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+<p>This pretend trial estimated the effect almost perfectly (about 2.1 kg), yet p ≈ .21: not significant. With n = 24 per group, even a spot-on estimate of a real 2 kg effect falls short of the 2.91 kg threshold from 1.2.</p>
+<p><strong>Step 4 — do it again.</strong> Same assumptions, new random draw. The histograms change, the difference between the means changes, and so does the p-value. Run this chunk several times and watch how often you get <code>TRUE</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>control   <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> mean_ctrl, <span class="at">sd =</span> sd_ctrl)</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>programme <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> mean_prog, <span class="at">sd =</span> sd_prog)</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(control, <span class="at">breaks =</span> breaks, <span class="at">col =</span> <span class="st">"grey80"</span>, <span class="at">main =</span> <span class="st">"Control"</span>, <span class="at">xlab =</span> <span class="st">"Weight loss (kg)"</span>)</span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">mean</span>(control), <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(programme, <span class="at">breaks =</span> breaks, <span class="at">col =</span> <span class="st">"steelblue"</span>, <span class="at">main =</span> <span class="st">"Programme"</span>, <span class="at">xlab =</span> <span class="st">"Weight loss (kg)"</span>)</span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">mean</span>(programme), <span class="at">lwd =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(programme) <span class="sc">-</span> <span class="fu">mean</span>(control)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.38416</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(programme, control, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>Even though the effect is real every single time, many runs come back non-significant. Each of those is a Type II error (a miss).</p>
+<p><strong>Step 5 — wrap one trial in a function.</strong> Running chunks by hand gets tedious, so we package Steps 2 and 3 (minus the plots) into a function that returns <code>TRUE</code> or <code>FALSE</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>one_trial <span class="ot">&lt;-</span> <span class="cf">function</span>(n, mean1, mean2, sd1, sd2) {</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  group1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, mean1, sd1)   <span class="co"># control</span></span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>  group2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, mean2, sd2)   <span class="co"># programme</span></span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>  test   <span class="ot">&lt;-</span> <span class="fu">t.test</span>(group2, group1, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>  reject <span class="ot">&lt;-</span> test<span class="sc">$</span>p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>    <span class="co"># the same decision as comparing t_obs to t_crit in 1.2</span></span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a>  reject</span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a><span class="fu">one_trial</span>(<span class="at">n =</span> <span class="dv">24</span>, <span class="at">mean1 =</span> <span class="dv">0</span>, <span class="at">mean2 =</span> <span class="dv">2</span>, <span class="at">sd1 =</span> <span class="dv">5</span>, <span class="at">sd2 =</span> <span class="dv">5</span>)   <span class="co"># one pretend trial: TRUE or FALSE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+<p><strong>Step 6 — repeat it many times and count.</strong> <code>replicate()</code> runs the function 2,000 times. Power is simply the long-run proportion of <code>TRUE</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4</span>)</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>decisions <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">2000</span>, <span class="fu">one_trial</span>(<span class="at">n =</span> <span class="dv">24</span>, <span class="at">mean1 =</span> <span class="dv">0</span>, <span class="at">mean2 =</span> <span class="dv">2</span>, <span class="at">sd1 =</span> <span class="dv">5</span>, <span class="at">sd2 =</span> <span class="dv">5</span>))</span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(decisions)   <span class="co"># the proportion of simulated trials that rejected H0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.294</code></pre>
+</div>
+</div>
+<p>Compare this to <code>power_by_hand</code> (1.2) and <code>pwr.t.test()</code>’s answer (1.3) — all three should agree to within a percentage point or two (simulation is noisy; more replicates would tighten it further).</p>
+<p>Notice <code>one_trial()</code> takes the two groups’ SDs <em>separately</em> (<code>sd1</code>, <code>sd2</code>), even though we gave it the same value for both. The by-hand formula and <code>pwr.t.test()</code> both secretly assumed the two groups share one SD — try changing <code>sd1 = 4, sd2 = 6</code> (keeping the same average spread) and rerunning: the simulation still works without changing a single line, while the closed-form answer from 1.3 can no longer promise to be exact. This is the real payoff of simulation: it keeps working once a design gets too complicated for a formula to exist.</p>
+</section>
+</section>
+<section id="section-b-plotting" class="level3">
+<h3 class="anchored" data-anchor-id="section-b-plotting">Section B: Plotting</h3>
+<section id="the-three-essentials" class="level4">
+<h4 class="anchored" data-anchor-id="the-three-essentials">1.6 The three essentials</h4>
+<p>Every <code>ggplot()</code> needs three things: <strong>data</strong>, an <strong>aesthetic mapping</strong> (<code>aes()</code>, which variable goes where), and at least one <strong>geom</strong> (the visual object). We’ll use data from our running example: a simulated version of Trial A, with 24 participants per group.</p>
+<p><strong>Load the data.</strong> The file is <code>seminar-03-power-and-plotting/seminar-03-worksheet_files/trial_a.csv</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>trial_A_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"seminar-03-power-and-plotting"</span>, <span class="st">"seminar-03-worksheet_files"</span>, <span class="st">"trial_a.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Explore it before plotting.</strong> Always look at the data first: what the columns are, what type each one is, and whether anything looks odd.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(trial_A_data)   <span class="co"># one row per participant: columns and their types</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 48
+Columns: 6
+$ id          &lt;chr&gt; "P01", "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P…
+$ group       &lt;chr&gt; "control", "control", "control", "control", "control", "co…
+$ sex         &lt;chr&gt; "female", "female", "female", "male", "female", "female", …
+$ age         &lt;int&gt; 43, 33, 59, 47, 59, 56, 43, 50, 51, 27, 59, 32, 35, 56, 45…
+$ baseline_kg &lt;dbl&gt; 101.6, 97.1, 78.0, 89.5, 80.8, 97.4, 84.3, 89.2, 77.2, 80.…
+$ loss_kg     &lt;dbl&gt; -1.0, 0.7, -4.4, 3.9, 6.9, 0.7, 0.4, -3.2, 5.4, 3.7, -4.8,…</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trial_A_data)      <span class="co"># the first six rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   id   group    sex age baseline_kg loss_kg
+1 P01 control female  43       101.6    -1.0
+2 P02 control female  33        97.1     0.7
+3 P03 control female  59        78.0    -4.4
+4 P04 control   male  47        89.5     3.9
+5 P05 control female  59        80.8     6.9
+6 P06 control female  56        97.4     0.7</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(trial_A_data)   <span class="co"># ranges, means, and any missing values (NA)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      id               group               sex                 age       
+ Length:48          Length:48          Length:48          Min.   :27.00  
+ Class :character   Class :character   Class :character   1st Qu.:36.50  
+ Mode  :character   Mode  :character   Mode  :character   Median :47.00  
+                                                          Mean   :45.15  
+                                                          3rd Qu.:55.25  
+                                                          Max.   :59.00  
+  baseline_kg        loss_kg      
+ Min.   : 68.50   Min.   :-4.900  
+ 1st Qu.: 80.45   1st Qu.:-1.175  
+ Median : 89.55   Median : 3.650  
+ Mean   : 90.60   Mean   : 3.185  
+ 3rd Qu.: 98.72   3rd Qu.: 6.325  
+ Max.   :121.00   Max.   :15.500  </code></pre>
+</div>
+</div>
+<p>Each row is one participant: an <code>id</code>, their <code>group</code> (control or programme), <code>sex</code>, <code>age</code>, their weight at the start (<code>baseline_kg</code>) and how much weight they lost over 12 weeks (<code>loss_kg</code>; a negative value means they gained weight).</p>
+<p>How many participants are in each group, and in each group by sex?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>trial_A_data <span class="sc">%&gt;%</span> <span class="fu">count</span>(group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      group  n
+1   control 24
+2 programme 24</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>trial_A_data <span class="sc">%&gt;%</span> <span class="fu">count</span>(group, sex)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      group    sex  n
+1   control female 12
+2   control   male 12
+3 programme female 11
+4 programme   male 13</code></pre>
+</div>
+</div>
+<p>And the numbers we actually care about, the mean and SD of weight loss in each group:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>trial_A_data <span class="sc">%&gt;%</span></span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span></span>
+<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">mean_loss =</span> <span class="fu">mean</span>(loss_kg), <span class="at">sd_loss =</span> <span class="fu">sd</span>(loss_kg))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  group         n mean_loss sd_loss
+  &lt;chr&gt;     &lt;int&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+1 control      24      1       5.00
+2 programme    24      5.37    5.00</code></pre>
+</div>
+</div>
+<p><strong>Now plot it.</strong> A first question: did people who started heavier lose more weight? Data = <code>trial_A_data</code>, aesthetic mapping = baseline weight on x and weight loss on y, geom = points:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(<span class="at">x =</span> baseline_kg, <span class="at">y =</span> loss_kg)) <span class="sc">+</span></span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="layer-by-layer-a-boxplot-that-grows" class="level4">
+<h4 class="anchored" data-anchor-id="layer-by-layer-a-boxplot-that-grows">1.7 Layer by layer: a boxplot that grows</h4>
+<p>Rather than jumping to a finished plot, build one up one layer at a time. Our main question: how much weight did each group lose?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="co"># start</span></span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> loss_kg)) <span class="sc">+</span></span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice that you can change the size of the plot in Quarto by modifying a header of the cell. Here, I added <code>fig.width=3, fig.height=4</code><br>
+</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="co"># start</span></span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> loss_kg)) <span class="sc">+</span></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="288"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This is a nice plot but a bit boring. Next we will use the <code>fill</code> aesthetic to give it come colour. The fill aesthetic maps specific variable, in this case <code>group</code> to a property of the plot, in this case the color of the fill. Better, no?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add fill by group, and flip the coordinates so the groups run down the page</span></span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> loss_kg, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="288"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice how you can also flip the axes, in case you prefer.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add fill by group, and flip the coordinates so the groups run down the page</span></span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> loss_kg, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Each addition is one idea: <code>fill</code> maps a variable to colour (a <strong>scale</strong>), <code>coord_flip()</code> changes the <strong>coordinate system</strong>. Nothing about the data changed between the two plots — only how it’s shown!</p>
+</section>
+<section id="geom_bar-vs.-geom_col" class="level4">
+<h4 class="anchored" data-anchor-id="geom_bar-vs.-geom_col">1.8 <code>geom_bar()</code> vs.&nbsp;<code>geom_col()</code></h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co"># geom_bar() counts rows for you</span></span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(<span class="at">x =</span> sex)) <span class="sc">+</span></span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Same picture, two different starting points: <code>geom_bar()</code> expects raw rows and counts them; <code>geom_col()</code> expects a column of values already summarised (here, by <code>count()</code>).</p>
+<p>Next step: adjust the y axis. <code>scale_y_continuous()</code> controls the y scale: <code>breaks</code> sets where the tick marks go, <code>limits</code> sets the range shown, and <code>name</code> sets the axis title:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(<span class="at">x =</span> sex)) <span class="sc">+</span></span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Number of participants"</span>,</span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">30</span>, <span class="at">by =</span> <span class="dv">5</span>),</span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">30</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="288"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Only the axis changed; the bars are the same. Be careful with <code>limits</code>, though: any value outside the limits is <em>removed</em> from the plot (!!!). Here every count fits between 0 and 30, so nothing is lost.</p>
+</section>
+<section id="colour-as-a-data-type-decision" class="level4">
+<h4 class="anchored" data-anchor-id="colour-as-a-data-type-decision">1.9 Colour as a data-type decision</h4>
+<p>Colour is another aesthetic: just as <code>x</code> and <code>y</code> map columns to positions, <code>colour</code> maps a column to colours. Which kind of palette you use depends on the <strong>type</strong> of that column, not on taste.</p>
+<p>First, a <strong>categorical</strong> variable. <code>group</code> has two unordered levels, control and programme, so each level gets its own, clearly different colour. <code>scale_colour_brewer(palette = "Set2")</code> picks a qualitative palette (distinct colours, none “bigger” than another):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(baseline_kg, loss_kg, <span class="at">colour =</span> group)) <span class="sc">+</span></span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now a <strong>continuous</strong> variable. <code>age</code> runs from the 20s to the 50s, so the colour should change gradually with it: light-to-dark (or one hue to another) as age increases. <code>scale_colour_viridis_c()</code> is a sequential palette (the <code>_c</code> stands for continuous), and it stays readable in greyscale and for colour-blind readers:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(baseline_kg, loss_kg, <span class="at">colour =</span> age)) <span class="sc">+</span></span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_c</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice the legends: a set of separate keys for <code>group</code>, a continuous colour bar for <code>age</code>. ggplot2 chose these because of the column types; the palette functions only control which colours are used.</p>
+</section>
+<section id="faceting" class="level4">
+<h4 class="anchored" data-anchor-id="faceting">1.10 Faceting</h4>
+<p>Colour is one way to show the two groups in a single plot. Another is to give each group its own panel. <code>facet_wrap(~ group)</code> splits the data by <code>group</code> and draws the same plot once for each level, side by side and on shared axes:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(baseline_kg, loss_kg)) <span class="sc">+</span></span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>These are small multiples: easier to read than one crowded plot when there are many groups, and the shared axes keep the panels directly comparable.</p>
+</section>
+<section id="themes" class="level4">
+<h4 class="anchored" data-anchor-id="themes">1.11 Themes</h4>
+<p>Finally, the <strong>theme</strong> controls everything that isn’t data: the background, gridlines, fonts and legend position. ggplot2 has several complete themes; here we swap the default grey background for <code>theme_minimal()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(baseline_kg, loss_kg, <span class="at">colour =</span> group)) <span class="sc">+</span></span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The points, colours and axes are exactly as before; only the look around them changed. This is the whole grammar, end to end: data, aesthetics, geoms, scales, coordinates, facets, theme, each one a separate, swappable layer.</p>
+</section>
+<section id="adjusting-individual-theme-properties" class="level4">
+<h4 class="anchored" data-anchor-id="adjusting-individual-theme-properties">1.12 Adjusting individual theme properties</h4>
+<p>A complete theme like <code>theme_minimal()</code> is a starting point. To change single properties, add <code>theme()</code> after it. Inside <code>theme()</code>, each property is set with an <em>element</em> function that matches what kind of thing it is:</p>
+<ul>
+<li><code>element_text()</code> for text (titles, axis labels): <code>size</code>, <code>face</code> (<code>"bold"</code>, <code>"italic"</code>), <code>colour</code>;</li>
+<li><code>element_line()</code> for lines (gridlines, axis lines): <code>colour</code>, <code>linewidth</code>;</li>
+<li><code>element_blank()</code> to remove something altogether.</li>
+</ul>
+<p>Some properties take a plain value instead, e.g.&nbsp;<code>legend.position = "bottom"</code>.</p>
+<p>Here we make the title bold, enlarge the axis titles, remove the minor gridlines, draw the axis lines, and move the legend below the plot:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(baseline_kg, loss_kg, <span class="at">colour =</span> group)) <span class="sc">+</span></span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Weight loss by starting weight"</span>,</span>
+<span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Baseline weight (kg)"</span>, <span class="at">y =</span> <span class="st">"Weight loss (kg)"</span>) <span class="sc">+</span></span>
+<span id="cb120-5"><a href="#cb120-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb120-6"><a href="#cb120-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title       =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb120-7"><a href="#cb120-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title       =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb120-8"><a href="#cb120-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb120-9"><a href="#cb120-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.line        =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"grey30"</span>),</span>
+<span id="cb120-10"><a href="#cb120-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position  =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Order matters: <code>theme()</code> must come <em>after</em> <code>theme_minimal()</code>, otherwise the complete theme overwrites your changes.</p>
+</section>
+<section id="creating-your-own-theme-and-reusing-it" class="level4">
+<h4 class="anchored" data-anchor-id="creating-your-own-theme-and-reusing-it">1.13 Creating your own theme and reusing it</h4>
+<p>In a paper or thesis, every figure should look the same: same fonts, same gridlines, same legend position. Rather than copying the same <code>theme()</code> lines into every plot, define the theme <strong>once</strong> and save it as an object. A theme is just an R object, so it can be stored with <code>&lt;-</code> like anything else:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>theme_paper <span class="ot">&lt;-</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span>          <span class="co"># base_size sets all text sizes at once</span></span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title       =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb121-3"><a href="#cb121-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb121-4"><a href="#cb121-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.line        =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"grey30"</span>),</span>
+<span id="cb121-5"><a href="#cb121-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position  =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The same idea works for colours: store the group colours once, so <code>control</code> and <code>programme</code> have the same colour in every figure:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>group_colours <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">control =</span> <span class="st">"grey55"</span>, <span class="at">programme =</span> <span class="st">"#1C68AB"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now apply both to any plot by adding them with <code>+</code>. First a scatterplot:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(baseline_kg, loss_kg, <span class="at">colour =</span> group)) <span class="sc">+</span></span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb123-3"><a href="#cb123-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> group_colours) <span class="sc">+</span></span>
+<span id="cb123-4"><a href="#cb123-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Weight loss by starting weight"</span>,</span>
+<span id="cb123-5"><a href="#cb123-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Baseline weight (kg)"</span>, <span class="at">y =</span> <span class="st">"Weight loss (kg)"</span>) <span class="sc">+</span></span>
+<span id="cb123-6"><a href="#cb123-6" aria-hidden="true" tabindex="-1"></a>  theme_paper</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Then a completely different plot, a boxplot, with exactly the same look:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trial_A_data, <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> loss_kg, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
+<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> group_colours) <span class="sc">+</span></span>
+<span id="cb124-4"><a href="#cb124-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Weight loss by group"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Weight loss (kg)"</span>) <span class="sc">+</span></span>
+<span id="cb124-5"><a href="#cb124-5" aria-hidden="true" tabindex="-1"></a>  theme_paper</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="seminar-03-worksheet_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To change the look of every figure later, edit <code>theme_paper</code> in one place and re-run. If you want a theme to apply to <em>all</em> plots in a script without adding it each time, set it as the default once at the top:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(theme_paper)   <span class="co"># every ggplot() from now on uses theme_paper</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<hr>
+</section>
+</section>
+</section>
+<section id="part-2-datacamp" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-datacamp">Part 2: DataCamp</h2>
+<p>This week’s two courses:</p>
+<ul>
+<li><a href="https://app.datacamp.com/learn/courses/introduction-to-statistics-in-r">Introduction to Statistics in R</a></li>
+<li><a href="https://app.datacamp.com/learn/courses/introduction-to-data-visualization-with-ggplot2">Introduction to Data Visualization with ggplot2</a></li>
+</ul>
+<hr>
+</section>
+<section id="part-3-exercises-in-rstudio" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-exercises-in-rstudio">Part 3: Exercises in RStudio</h2>
+<p>Simple, and in order — each one builds on the last. Every exercise mirrors a walkthrough subsection from Part 1 (named in brackets), but this time on <strong>Trial B</strong>, Seminar 2’s other trial: n = 4,000 per group, the same population SD of 5 kg.</p>
+<p>Start by loading Trial B’s data. It has the same columns as Trial A’s (<code>id</code>, <code>group</code>, <code>sex</code>, <code>age</code>, <code>baseline_kg</code>, <code>loss_kg</code>), just many more rows:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a>trial_B_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"seminar-03-power-and-plotting"</span>, <span class="st">"seminar-03-worksheet_files"</span>, <span class="st">"trial_b.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="power-16" class="level3">
+<h3 class="anchored" data-anchor-id="power-16">Power (1–6)</h3>
+<p>Exercises 1–3, 5 and 6 work from Trial B’s design (n, SD and a 2 kg effect), so they don’t need the data. Exercise 4 uses the data to find the effect Trial B actually observed.</p>
+</section>
+<section id="exercise-1-qt-for-trial-b-mirrors-1.1" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-1-qt-for-trial-b-mirrors-1.1">Exercise 1 — <code>qt()</code> for Trial B [mirrors 1.1]</h3>
+<p>Trial B’s df is <code>2 * 4000 - 2 = 7998</code>. Using <code>qt()</code>, find its two-sided 5%-level critical value. It should be very close to Trial A’s — explain in a comment why, even though the two trials have wildly different n.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-2-power-by-hand-for-trial-b-mirrors-1.2" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-2-power-by-hand-for-trial-b-mirrors-1.2">Exercise 2 — Power by hand for Trial B [mirrors 1.2]</h3>
+<p>Following 1.2’s steps exactly (<code>se</code>, <code>df</code>, <code>t_crit</code>, the threshold in kg, its t-score under H1, then <code>pt()</code>), calculate Trial B’s power to detect a 2 kg effect with n = 4,000 per group. Then check it with the exact <code>ncp</code> version. Use <code>sd &lt;- 5</code> and <code>mean_diff &lt;- 2</code>, just like Trial A — only <code>n</code> changes.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-3-confirm-with-pwr.t.test-mirrors-1.3" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-3-confirm-with-pwr.t.test-mirrors-1.3">Exercise 3 — Confirm with <code>pwr.t.test()</code> [mirrors 1.3]</h3>
+<p>Check Exercise 2’s answer against <code>pwr.t.test()</code>. Do the two match?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-4-trial-bs-own-effect-mirrors-1.4" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-4-trial-bs-own-effect-mirrors-1.4">Exercise 4 — Trial B’s <em>own</em> effect [mirrors 1.4]</h3>
+<p>Trial B didn’t find anything close to 2 kg. Using <code>trial_B_data</code>, calculate the mean weight loss in each group (as in 1.6) and the difference between them. You should get about 0.243 kg, which is d = 0.243 / 5 ≈ 0.049.</p>
+<p>Now recompute the power (by hand, or with <code>pwr.t.test()</code>) for <em>this</em> effect at n = 4,000. Why is it so much lower than Exercise 2/3’s answer, even with identical n? In a comment, connect this back to 1.4’s observed-power fallacy.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb130"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-5-power-by-simulation-for-trial-b-mirrors-1.5" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-5-power-by-simulation-for-trial-b-mirrors-1.5">Exercise 5 — Power by simulation for Trial B [mirrors 1.5]</h3>
+<p>Adapt 1.5’s <code>one_trial()</code> to Trial B’s n and a 2 kg effect (<code>mean1 = 0</code>, <code>mean2 = 2</code>, <code>sd1 = sd2 = 5</code>, <code>n = 4000</code>). Replicate it and estimate the simulated power. Compare it to Exercises 2 and 3.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb131"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-6-unequal-sds-once-more-mirrors-1.5" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-6-unequal-sds-once-more-mirrors-1.5">Exercise 6 — Unequal SDs, once more [mirrors 1.5]</h3>
+<p>Repeat Exercise 5, but with <code>sd1 = 4</code> and <code>sd2 = 6</code> instead of 5 and 5. Does the simulated power change much? In a comment, say why <code>pwr.t.test()</code> can no longer promise an exact answer here, while the simulation needed no changes beyond the two numbers.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb132"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="plotting-714" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-714">Plotting (7–14)</h3>
+<p>All plotting exercises use <code>trial_B_data</code>.</p>
+</section>
+<section id="exercise-7-first-look-mirrors-1.6" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-7-first-look-mirrors-1.6">Exercise 7 — First look [mirrors 1.6]</h3>
+<p>Explore <code>trial_B_data</code> before plotting it: use <code>glimpse()</code>, <code>summary()</code> and <code>count()</code>. How many participants are in each group, and in each group by sex? Which columns are categorical, and which are continuous?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb133"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-8-your-first-plot-mirrors-1.6" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-8-your-first-plot-mirrors-1.6">Exercise 8 — Your first plot [mirrors 1.6]</h3>
+<p>Make a scatterplot of <code>loss_kg</code> (y) against <code>baseline_kg</code> (x). With 8,000 points the plot is very crowded: add <code>alpha = 0.2</code> inside <code>geom_point()</code> to make the points transparent, so you can see where they pile up.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-9-adding-colour-mirrors-1.9" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-9-adding-colour-mirrors-1.9">Exercise 9 — Adding colour [mirrors 1.9]</h3>
+<p>Add <code>colour = group</code> to Exercise 8’s aesthetic mapping. Can you tell the two groups apart? What does that tell you about a 0.24 kg difference?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb135"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-10-a-boxplot-mirrors-1.7" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-10-a-boxplot-mirrors-1.7">Exercise 10 — A boxplot [mirrors 1.7]</h3>
+<p>Make a boxplot of <code>loss_kg</code> by <code>group</code>. Compare it with Trial A’s boxplot from 1.7.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb136"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-11-bar-charts-and-the-y-axis-mirrors-1.8" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-11-bar-charts-and-the-y-axis-mirrors-1.8">Exercise 11 — Bar charts and the y axis [mirrors 1.8]</h3>
+<p>Build a bar chart of the number of participants of each <code>sex</code> both ways: once with <code>geom_bar()</code> directly on <code>trial_B_data</code>, once by summarising with <code>count()</code> first and plotting with <code>geom_col()</code>. In a comment, say which geom expects already-summarised data. Then use <code>scale_y_continuous()</code> to give the y axis a proper title and breaks.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb137"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-12-one-layer-at-a-time-mirrors-1.7" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-12-one-layer-at-a-time-mirrors-1.7">Exercise 12 — One layer at a time [mirrors 1.7]</h3>
+<p>Starting from Exercise 10’s boxplot, add <code>fill = group</code>, then (as a second, separate version) also add <code>coord_flip()</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-13-faceting-mirrors-1.10" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-13-faceting-mirrors-1.10">Exercise 13 — Faceting [mirrors 1.10]</h3>
+<p>Facet Exercise 8’s scatterplot by <code>sex</code> using <code>facet_wrap(~ sex)</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb139"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-14-put-it-together-mirrors-1.111.13" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-14-put-it-together-mirrors-1.111.13">Exercise 14 — Put it together [mirrors 1.11–1.13]</h3>
+<p>Build one plot combining at least three grammar components from this week: a geom, a colour scale, and either a facet or a theme. Finish it with <code>theme_paper</code> and <code>group_colours</code> from 1.13, so it matches your Trial A figures.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<hr>
+</section>
+</section>
+<section id="extra-optional" class="level2">
+<h2 class="anchored" data-anchor-id="extra-optional">Extra (optional)</h2>
+<section id="normal-vs.-t-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="normal-vs.-t-distribution">Normal vs.&nbsp;t-distribution</h3>
+<p>Everything above used the t-distribution, the correct choice whenever the population SD is estimated from the sample (as it almost always is). Here’s what changes if you use the normal distribution instead.</p>
+<p><strong>E1 — Critical values converge.</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb141"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a>dfs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">30</span>, <span class="dv">100</span>)</span>
+<span id="cb141-2"><a href="#cb141-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">df =</span> dfs, <span class="at">t_crit =</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, dfs), <span class="at">z_crit =</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   df   t_crit   z_crit
+1   5 2.570582 1.959964
+2  10 2.228139 1.959964
+3  30 2.042272 1.959964
+4 100 1.983972 1.959964</code></pre>
+</div>
+</div>
+<p>As df grows, <code>qt()</code> gets closer to <code>qnorm()</code>’s fixed 1.96 — the t-distribution <em>is</em> the normal distribution, with extra uncertainty built in for small samples.</p>
+<p><strong>E2 — Using the normal for Trial A anyway.</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb143"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb143-1"><a href="#cb143-1" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fl">1.44</span>  <span class="co"># Trial A's SE, from Seminar 2</span></span>
+<span id="cb143-2"><a href="#cb143-2" aria-hidden="true" tabindex="-1"></a>moe_t <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">46</span>) <span class="sc">*</span> se</span>
+<span id="cb143-3"><a href="#cb143-3" aria-hidden="true" tabindex="-1"></a>moe_z <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>) <span class="sc">*</span> se</span>
+<span id="cb143-4"><a href="#cb143-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">t_based =</span> moe_t, <span class="at">normal_based =</span> moe_z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     t_based normal_based 
+    2.898570     2.822348 </code></pre>
+</div>
+</div>
+<p>The normal-based margin of error is a little too small — it understates the real uncertainty when n is this modest, which is exactly why the t-distribution exists.</p>
+</section>
+<section id="r-tistry" class="level3">
+<h3 class="anchored" data-anchor-id="r-tistry">R-tistry</h3>
+<p>“R-tistry” is generative art made entirely with R code — the same <code>ggplot2</code> grammar from Part 1, pointed at making something to look at rather than something to read. Explore these first:</p>
+<ul>
+<li><a href="https://thetidytrekker.com/rtistry.html">Rtistry Gallery — The Tidy Trekker</a> — a gallery of finished pieces, for inspiration.</li>
+<li><a href="https://thetidytrekker.com/post/thinking-outside-the-grid/thinking-outside-the-grid.html">Thinking Outside the Grid</a> — a “bare bones” walkthrough of R-tistry concepts using plain <code>ggplot2</code>.</li>
+<li><a href="https://blog.djnavarro.net/posts/2021-10-19_rtistry-posts/">Generative art resources in R — Danielle Navarro</a> — a curated list of further tutorials and tools.</li>
+<li><a href="https://koenderks.github.io/aRtsy/"><code>aRtsy</code></a> — a package that generates a finished piece from one line of code (e.g.&nbsp;<code>aRtsy::canvas_strokes()</code>), if you’d rather start from something and modify it.</li>
+</ul>
+<p><strong>R1 — Points and noise.</strong> Make a plot using <code>geom_point()</code>, <code>jitter</code>, transparency (<code>alpha</code>), and colour — no “correct” answer, just see what happens.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb145"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>R2 — Try <code>aRtsy</code>.</strong> Install it (<code>renv::install("aRtsy")</code>), then call one <code>aRtsy::canvas_*()</code> function and change a couple of its parameters.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>R3 — Your own piece.</strong> Make the piece you’ll actually submit.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb147"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="co"># your code here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Submitting:</strong> post your piece (and, ideally, the code) wherever the module tells you to submit it. The class and the wider School of Psychology will vote on their favourites, and the winner receives an important statistical award.</p>
+</section>
+</section>
+<section id="reading-assigned-today-due-before-week-10" class="level2">
+<h2 class="anchored" data-anchor-id="reading-assigned-today-due-before-week-10">Reading assigned today (due before Week 10)</h2>
+<p>TBC — will be announced at the end of this session.</p>
+</section>
+<section id="where-to-get-help" class="level2">
+<h2 class="anchored" data-anchor-id="where-to-get-help">Where to get help</h2>
+<p>Ask on the PSY40760 module forum (tag Ondrej or Cameron) any time before the session, or bring questions/your laptop to the practical — Cameron is there specifically for this.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
